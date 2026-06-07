@@ -1,0 +1,199 @@
+/* =========================
+   ACTION BUTTON
+========================= */
+
+.action-btn {
+    background: #0f766e;
+    color: #fff;
+    transition: .2s;
+    border: none;
+    height: 42px;
+    font-weight: 500;
+}
+
+.action-btn:hover {
+    background: #0d9488;
+    transform: translateY(-1px);
+    color: #fff;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-card {
+    border-radius: 16px;
+    border-top: 3px solid #0f766e !important;
+}
+
+.summary-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.summary-date {
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: inline-block;
+    color: #0f172a;
+}
+
+.checkin-time {
+    font-size: 34px;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.checkout-time {
+    font-size: 34px;
+    font-weight: 700;
+    color: #16a34a;
+}
+
+.summary-icon {
+    font-size: 24px;
+    color: #64748b;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-card {
+    border-radius: 18px;
+    border-top: 3px solid #0f766e !important;
+    overflow: hidden;
+}
+
+.table {
+    margin: 0;
+}
+
+.table thead {
+    background: #f8fafc;
+}
+
+.table thead th {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 18px 22px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tbody td {
+    padding: 22px;
+    border-color: #f1f5f9;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 15px;
+    color: #334155;
+}
+
+/* Hover row */
+.table tbody tr:hover {
+    background: #f8fafc;
+    transition: .2s;
+}
+
+/* Ngày */
+.table tbody td:first-child {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Giờ checkin */
+.table tbody td:nth-child(2) {
+    color: #ef4444;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* Giờ checkout */
+.table tbody td:nth-child(4) {
+    color: #16a34a;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* Đi muộn */
+.table tbody td:nth-child(3) {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+/* Về sớm */
+.table tbody td:nth-child(5) {
+    color: #d97706;
+    font-weight: 600;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+    border: 1px solid transparent;
+}
+
+.status-badge.active {
+    background: #ecfdf5;
+    color: #059669;
+    border-color: #a7f3d0;
+}
+
+.status-badge.inactive {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .checkin-time,
+    .checkout-time {
+        font-size: 24px;
+    }
+
+    .summary-icon {
+        margin: 15px 0;
+        transform: rotate(90deg);
+    }
+
+    .summary-card .col-md-1,
+    .summary-card .col-md-3,
+    .summary-card .col-md-4 {
+        margin-bottom: 15px;
+    }
+
+}
+.pagination { display: flex; align-items: center; gap: 4px; list-style: none; padding: 0; margin: 0; }
+.page-link {
+    display: flex; align-items: center; justify-content: center;
+    min-width: 34px; height: 34px; padding: 0 6px;
+    border: 0.5px solid #dee2e6;
+    border-radius: 8px;
+    background: #fff;
+    color: #212529;
+    font-size: 13px; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.page-link:hover { background: #f8f9fa; border-color: #adb5bd; }
+.page-item.active .page-link { background: #3C3489; border-color: #3C3489; color: #fff; }
+.page-item.disabled .page-link { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
