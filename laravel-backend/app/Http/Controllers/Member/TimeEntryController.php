@@ -16,15 +16,17 @@ class TimeEntryController extends Controller
     public function getWorkingDay()
     {
         $workingDay = WorkingDay::whereDate('work_date', today())->first();
-        if (!$workingDay) {
+        if (! $workingDay) {
             return response()->json([
-                'message' => 'Hôm nay không có lịch làm việc'
+                'message' => 'Hôm nay không có lịch làm việc',
             ], 404);
         }
+
         return response()->json($workingDay, 200);
     }
+
     public function CreateCheckin(Request $request)
-    {   
+    {
         try {
             $user_id = Auth::user()->id;
             // Giờ quy định
@@ -43,10 +45,10 @@ class TimeEntryController extends Controller
             // Chưa checkout nên mặc định = 0
             $number_minutes_quit_early = 0;
 
-            $timeEntry = TimeEntry::where(['user_id' => $user_id,'checkin_date' => $request->day_id])->first();
+            $timeEntry = TimeEntry::where(['user_id' => $user_id, 'checkin_date' => $request->day_id])->first();
             if ($timeEntry && $timeEntry->checkin_time) {
                 return response()->json([
-                    'message' => 'Bạn đã check in rồi'
+                    'message' => 'Bạn đã check in rồi',
                 ], 400);
             }
             $checkin = TimeEntry::create([
@@ -62,87 +64,94 @@ class TimeEntryController extends Controller
                 'time_entry_id' => $time_entry_id,
                 'is_late' => $is_late,
             ]);
-            return response()->json(['message'=>'Check in thành công'],200);
+
+            return response()->json(['message' => 'Check in thành công'], 200);
         } catch (\Throwable $e) {
-            return response()->json(['message'=>'Check in thành công',$e->getMessage()],422);
+            return response()->json(['message' => 'Check in thất bại', $e->getMessage()], 422);
         }
-        
+
     }
+
     public function CreateCheckout(Request $request)
-    {   
+    {
         try {
             $user_id = Auth::user()->id;
             // Giờ quy định
             $work_end = Carbon::parse($request->checkout_time);
             $actual_checkout = Carbon::now();
-            
+
             $number_minutes_quit_early = 0;
             $is_quit_early = 0;
-            
+
             // Về sớm
             if ($actual_checkout->lt($work_end)) {
                 $number_minutes_quit_early = $actual_checkout->diffInMinutes($work_end);
                 $is_quit_early = 1;
             }
 
-            $checkout = TimeEntry::where(['checkin_date' => $request->day_id,'user_id' => $user_id])->first();
+            $checkout = TimeEntry::where(['checkin_date' => $request->day_id, 'user_id' => $user_id])->first();
             if ($checkout->checkout_time) {
                 return response()->json([
-                    'message' => 'Bạn đã check out rồi'
+                    'message' => 'Bạn đã check out rồi',
                 ], 400);
             }
             $checkout->update([
                 'checkout_time' => $request->checkout_time,
                 'number_minutes_quit_early' => $number_minutes_quit_early,
             ]);
-        
-            
-            return response()->json(['message'=>'Check out thành công'],200);
+
+            return response()->json(['message' => 'Check out thành công'], 200);
         } catch (\Throwable $e) {
-            return response()->json(['message'=>'Check out thành công',$e->getMessage()],422);
+            return response()->json(['message' => 'Check out thất bại', $e->getMessage()], 422);
         }
-        
+
     }
+
     public function getAttendance()
     {
-        $attendance = TimeEntry::with('workingDay')->get();
-    
+        $attendance = TimeEntry::with('workingDay')
+            ->orderBy('time_entry_id', 'desc')
+            ->get();
+
         $attendance->transform(function ($item) {
-    
+
             // Đi muộn
             $lateHours = floor($item->number_minutes_late / 60);
             $lateMinutes = $item->number_minutes_late % 60;
-    
+
             $item->late_time_text =
-                ($lateHours > 0 ? $lateHours . ' giờ ' : '') .
-                ($lateMinutes > 0 ? $lateMinutes . ' phút' : '');
-    
+                ($lateHours > 0 ? $lateHours.' giờ ' : '').
+                ($lateMinutes > 0 ? $lateMinutes.' phút' : '');
+
             // Về sớm
             $quitHours = floor($item->number_minutes_quit_early / 60);
             $quitMinutes = $item->number_minutes_quit_early % 60;
-    
+
             $item->quit_early_text =
-                ($quitHours > 0 ? $quitHours . ' giờ ' : '') .
-                ($quitMinutes > 0 ? $quitMinutes . ' phút' : '');
-    
+                ($quitHours > 0 ? $quitHours.' giờ ' : '').
+                ($quitMinutes > 0 ? $quitMinutes.' phút' : '');
+
             return $item;
         });
-    
+
         return response()->json($attendance);
     }
-    public function createExpalaination(Request $request){
+
+    public function createExpalaination(Request $request)
+    {
 
         try {
-            $aa=Expalaination::create([
+            $aa = Expalaination::create([
                 'create_date' => $request->create_date,
                 'reason' => $request->reason,
                 'type' => $request->type,
                 'status' => '0',
                 'time_entry_id' => $request->time_entry_id,
             ]);
-            return response()->json(['aa'=>$aa, 'message'=>'Bạn đã giải trình thành công!'],200);
+
+            return response()->json(['aa' => $aa, 'message' => 'Bạn đã giải trình thành công!'], 200);
         } catch (\Throwable $e) {
-            return response()->json(['message'=>'Bạn đã giải trình thất bại',$e -> getMessage()],422); 
+            return response()->json(['message' => 'Bạn đã giải trình thất bại', $e->getMessage()], 422);
         }
     }
 }

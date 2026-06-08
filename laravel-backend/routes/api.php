@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ResetpasswordController;
 use App\Http\Controllers\Member\EmployeeController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\DepartmentController;
+use App\Http\Controllers\Member\ExpalainationController;
 use App\Http\Controllers\Member\GetUserController;
 use App\Http\Controllers\Member\PositionController;
 use App\Http\Controllers\Member\ProfileController;
@@ -81,7 +82,15 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-attendance','getAttendance');
         Route::post('/create-expalaination','createExpalaination');
         Route::get('/get-expalaination','getExpalaination');
+    });
+    Route::prefix('expalaination')->controller(ExpalainationController::class)->group(function(){
+        Route::get('/get-expalaination','getExpalaination');
+        Route::get('/search-expalaination','searchExpalaination');
+        Route::put('/update/{id}','updateExpalaination');
+        Route::delete('/delete/{id}','deleteExpalaination');
 
+        
+        
     });
 });
 
