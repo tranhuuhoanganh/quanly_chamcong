@@ -19,7 +19,7 @@
     import Position from '../components/member/Setting/Position/Position.vue'
     import WorkingDay from '../components/member/Setting/Schedule/WorkingDay.vue'
     import Attendance from '../components/member/TimeTracking/Attendance.vue'
-
+    import ListstExpalaination from '../components/member/TimeTracking/Expalaination/list-expalaination.vue'
     const routes = [
         // Auth
         {
@@ -105,10 +105,16 @@
                         title: 'Lịch làm việc'
                     }
                 },{
-                    path: '/TimeTracking/attendance',
+                    path: 'timeTracking/attendance',
                     component: Attendance,
                     meta: {
                         title: 'Chấm công'
+                    }
+                },{
+                    path: '/timeTracking/list-expalaination',
+                    component: ListstExpalaination,
+                    meta: {
+                        title: 'Giải trình chấm công'
                     }
                 }
             ]

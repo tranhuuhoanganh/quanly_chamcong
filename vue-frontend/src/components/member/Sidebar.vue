@@ -189,8 +189,8 @@ const menus = [
       </svg>
     `,
     children: [
-      { to: "/TimeTracking/attendance", label: "Bảng chấm công" },
-      { to: "/TimeTracking/explanation", label: "Giải trình" },
+      { to: "/timeTracking/attendance", label: "Bảng chấm công" },
+      { to: "/timeTracking/list-expalaination", label: "Giải trình" },
 
     ],  
   },
