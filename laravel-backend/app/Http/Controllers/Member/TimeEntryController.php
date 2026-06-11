@@ -110,6 +110,7 @@ class TimeEntryController extends Controller
     public function getAttendance()
     {
         $attendance = TimeEntry::with('workingDay')
+            ->where('user_id',Auth::id())
             ->orderBy('time_entry_id', 'desc')
             ->get();
 

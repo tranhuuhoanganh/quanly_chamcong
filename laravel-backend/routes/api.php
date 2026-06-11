@@ -88,8 +88,10 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/search-expalaination','searchExpalaination');
         Route::put('/update/{id}','updateExpalaination');
         Route::delete('/delete/{id}','deleteExpalaination');
+        Route::get('/get-DetailExpalaination','getDetailExpalaination');
+        Route::get('/search-DetailExpalaination','searchDetailExpalaination');
+        Route::get('/get-user','getUser');
 
-        
         
     });
 });
