@@ -225,9 +225,8 @@ const menus = [
       </svg>
     `,
     children: [
-      { to: "/orders/create", label: "Tạo đơn" },
-      { to: "/worklogs/explanation", label: "Giải trình chấm công" },
-      { to: "/worklogs/leave", label: "Nghỉ phép" },
+      { to: "/orders/explanation-approval", label: "Phê duyệt giải trình" },
+      { to: "/orders/leave-approval", label: "Phê duyệt nghỉ phép" },
     ],
   },
 

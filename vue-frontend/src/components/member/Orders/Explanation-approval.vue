@@ -65,12 +65,7 @@
                             <td class="text-center" v-if="expalaination.status == 0">
                                 <button class="btn btn-sm btn-light border me-2" style="border-radius:10px;"
                                     @click="openEditModal(expalaination)">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-
-                                <button class="btn btn-sm btn-light border text-danger" style="border-radius:10px;"
-                                    @click="deleteExpalaination(expalaination.explain_id)">
-                                    <i class="fa-regular fa-trash-can"></i>
+                                    <i class="fa-solid fa-list-check"></i>
                                 </button>
                             </td>
 
@@ -106,47 +101,39 @@
                 </nav>
             </div>
         </div>
-        <BoxPopEditExpalaination v-if="showEditExpalaination" :expalaination="selectEditExpalaination"
-            @close="showEditExpalaination = false" @update="getExpalaination" />
+        <ExplanationDetail v-if="showDetailExpalaination" :expalaination="selectDetailExpalaination"
+            @close="showDetailExpalaination = false" @update="getExpalaination" />
     </div>
 </template>
 
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import api from '../../../../axios'
-import BoxPopEditExpalaination from './BoxPopEditExpalaination.vue'
+import api from '../../../axios.js'
 import { useToast } from 'vue-toastification'
-import { usePagination } from '../../../../usePagination'
+import { usePagination } from '../../../usePagination.js'
+import ExplanationDetail from './Explanation-detail.vue'
 const formData = reactive({
     date: ''
 })
 const toast = useToast()
-const showEditExpalaination = ref(false)
+const showDetailExpalaination = ref(false)
 const expalainations = ref([])
 const { currentPage, totalPages, pagination, changePage, reset } = usePagination(expalainations, 7)
 const search_expalaination = async () => {
-    const res = await api.get('expalaination/search-expalaination', { params: formData })
+    const res = await api.get('expalaination/search-DetailExpalaination', { params: formData })
     expalainations.value = res.data
     reset()
 }
 const getExpalaination = async () => {
-    const res = await api.get(`expalaination/get-expalaination`)
+    const res = await api.get(`expalaination/get-DetailExpalaination`)
     expalainations.value = res.data
     reset()
 }
-const deleteExpalaination = async (id) => {
-    try {
-        const res = await api.delete(`expalaination/delete/${id}`)
-        getExpalaination()
-        toast.success(res.data.message)
-    } catch (error) {
-        toast.error(error.response.data.message)
-    }
-}
-const selectEditExpalaination = ref(null)
+
+const selectDetailExpalaination = ref(null)
 const openEditModal = (expalaination) => {
-    selectEditExpalaination.value = expalaination
-    showEditExpalaination.value = true
+    selectDetailExpalaination.value = expalaination
+    showDetailExpalaination.value = true
 }
 onMounted(() => {
     getExpalaination()

@@ -20,6 +20,7 @@
     import WorkingDay from '../components/member/Setting/Schedule/WorkingDay.vue'
     import Attendance from '../components/member/TimeTracking/Attendance.vue'
     import ListstExpalaination from '../components/member/TimeTracking/Expalaination/list-expalaination.vue'
+    import ExplanationApproval from '../components/member/Orders/Explanation-approval.vue';
     const routes = [
         // Auth
         {
@@ -115,6 +116,13 @@
                     component: ListstExpalaination,
                     meta: {
                         title: 'Giải trình chấm công'
+                    }
+                }
+                ,{
+                    path: '/orders/explanation-approval',
+                    component: ExplanationApproval,
+                    meta: {
+                        title: 'Phê duyệt giải trình'
                     }
                 }
             ]
