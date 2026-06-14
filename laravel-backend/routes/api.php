@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticareController;
 use App\Http\Controllers\Auth\ForgotpasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetpasswordController;
+use App\Http\Controllers\Member\ConfirmExplainationController;
 use App\Http\Controllers\Member\EmployeeController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\DepartmentController;
@@ -91,8 +92,9 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-DetailExpalaination','getDetailExpalaination');
         Route::get('/search-DetailExpalaination','searchDetailExpalaination');
         Route::get('/get-user','getUser');
-
-        
+        Route::post('/reject-expalaination', 'rejectExpalaination');
+        Route::post('/approve-expalaination', 'approveExpalaination');
+  
     });
 });
 

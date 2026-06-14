@@ -28,7 +28,8 @@
 
         <!-- Dashboard -->
         <li class="nav-item mb-1">
-          <router-link to="/dashboard" class="nav-link d-flex align-items-center gap-2 px-3 sidebar-link rounded-4 fw-bold"
+          <router-link to="/dashboard"
+            class="nav-link d-flex align-items-center gap-2 px-3 sidebar-link rounded-4 fw-bold"
             active-class="active-link">
             <i class="fa-solid fa-table-columns"></i>
             <span>Tổng quan</span>
@@ -192,7 +193,7 @@ const menus = [
       { to: "/timeTracking/attendance", label: "Bảng chấm công" },
       { to: "/timeTracking/list-expalaination", label: "Giải trình" },
 
-    ],  
+    ],
   },
 
   {
@@ -208,10 +209,10 @@ const menus = [
       </svg>
     `,
     children: [
-      { to: "/leave/create", label: "Tạo đơn nghỉ phép" },
-      { to: "/leave/annual", label: "Ngày phép năm" },
-      { to: "/leave/ot", label: "Ngày phép OT" },
-    ],
+      { to: "/leave/create-leave", label: "Tạo đơn nghỉ phép" },
+      { to: "/leave/annual-leave", label: "Phép năm" },
+      { to: "/leave/ot-leave", label: "Phép OT" },
+    ]
   },
 
   {

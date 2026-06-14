@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\ConfirmExplaination;
 use App\Models\Employee;
 use App\Models\Expalaination;
 use App\Models\TimeEntry;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,5 +73,45 @@ class ExpalainationController extends Controller
         }
         $expalaination->delete();
         return response()->json(['message'=>'Bạn đã xóa expalaination thành công!']);
+    }
+    public function approveExpalaination(Request $request){
+        try {
+            $updateExplain = Expalaination::find($request->explain_id);
+            if (!$updateExplain) {
+                return response()->json(['message'=>'Không có expalaination'],422);
+
+            }
+            $updateExplain->update([
+                'status' => 1
+            ]);
+            ConfirmExplaination::create([
+                'cf_date' => Carbon::now(),
+                'approve_id' => Auth::id(),
+                'explain_id' => $request->explain_id,
+            ]);
+            return response()->json(['message' => 'Duyệt giải trình thành công'],200);
+        } catch (\Throwable $e) {
+            return response()->json(['message'=>'Duyệt giải trình thất bại!',$e->getMessage()],500);
+        }
+    }
+    public function rejectExpalaination(Request $request){
+        try {
+            $updateExplain = Expalaination::find($request->explain_id);
+        if (!$updateExplain) {
+            return response()->json(['message'=>'Không có expalaination'],422);
+        }
+        $updateExplain->update([
+            'status' => 2
+        ]);
+        ConfirmExplaination::create([
+            'cf_date' => Carbon::now(),
+            'approve_id' => Auth::id(),
+            'explain_id' => $request->explain_id,
+        ]);
+        return response()->json(['message' => 'Từ chối giải trình thành công'],200);
+
+        } catch (\Throwable $e) {
+            return response()->json(['message'=>'Từ chối giải trình thất bại!',$e->getMessage()],500);
+        }
     }
 }

@@ -88,11 +88,13 @@
                         <!-- Footer -->
                         <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
 
-                            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-semibold shadow-sm">
+                            <button type="button" class="btn btn-danger rounded-pill px-4 fw-semibold shadow-sm"
+                                @click="rejectExpalaination">
                                 <i class="fa-solid fa-xmark me-2"></i>
                                 Từ chối
                             </button>
-                            <button type="submit" class="btn btn-success rounded-pill px-4 fw-semibold shadow-sm">
+                            <button type="button" class="btn btn-success rounded-pill px-4 fw-semibold shadow-sm"
+                                @click="approveExplanation">
                                 <i class="fa-solid fa-check me-2"></i>
                                 Phê duyệt
                             </button>
@@ -128,12 +130,22 @@ const formData = reactive({
     type: ''
 })
 
-const saveExpalaination = async () => {
+const rejectExpalaination = async () => {
     try {
-        const res = await api.put(`expalaination/update/${props.expalaination.explain_id}`, formData)
+        const res = await api.post('expalaination/reject-expalaination', { explain_id: props.expalaination.explain_id })
+        toast.success(res.data.message)
         emit('close')
         emit('update')
+    } catch (error) {
+        toast.error(error.response.data.message)
+    }
+}
+const approveExplanation = async () => {
+    try {
+        const res = await api.post('expalaination/approve-expalaination', { explain_id: props.expalaination.explain_id })
         toast.success(res.data.message)
+        emit('close')
+        emit('update')
     } catch (error) {
         toast.error(error.response.data.message)
     }
@@ -145,7 +157,6 @@ const getUser = async () => {
         }
     })
     user.value = res.data
-
 }
 onMounted(async () => {
     Object.assign(formData, {

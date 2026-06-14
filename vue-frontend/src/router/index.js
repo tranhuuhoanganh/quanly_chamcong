@@ -21,6 +21,7 @@
     import Attendance from '../components/member/TimeTracking/Attendance.vue'
     import ListstExpalaination from '../components/member/TimeTracking/Expalaination/list-expalaination.vue'
     import ExplanationApproval from '../components/member/Orders/Explanation-approval.vue';
+    import CreateLeave from '../components/member/Leave/CreateLeave.vue'
     const routes = [
         // Auth
         {
@@ -117,12 +118,17 @@
                     meta: {
                         title: 'Giải trình chấm công'
                     }
-                }
-                ,{
+                },{
                     path: '/orders/explanation-approval',
                     component: ExplanationApproval,
                     meta: {
                         title: 'Phê duyệt giải trình'
+                    }
+                },{
+                    path: '/leave/create-leave',
+                    component: CreateLeave,
+                    meta: {
+                        title: 'Tạo đơn xin nghỉ'
                     }
                 }
             ]
