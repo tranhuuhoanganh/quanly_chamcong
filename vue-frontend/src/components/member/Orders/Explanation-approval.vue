@@ -118,7 +118,7 @@ const formData = reactive({
 const toast = useToast()
 const showDetailExpalaination = ref(false)
 const expalainations = ref([])
-const { currentPage, totalPages, pagination, changePage, reset } = usePagination(expalainations, 7)
+const { currentPage, totalPages, pagination, changePage, reset } = usePagination(expalainations, 4)
 const search_expalaination = async () => {
     const res = await api.get('expalaination/search-DetailExpalaination', { params: formData })
     expalainations.value = res.data

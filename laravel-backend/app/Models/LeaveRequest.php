@@ -30,19 +30,11 @@ class LeaveRequest extends Model
 
     public function leaveType()
     {
-        return $this->belongsTo(
-            LeaveType::class,
-            'type_id',
-            'type_id'
-        );
+        return $this->belongsTo(LeaveType::class,'type_id','type_id');
     }
 
-    public function Employee()
+    public function employee()
     {
-        return $this->belongsTo(
-            Employee::class,
-            'user_id',
-            'id'
-        );
+        return $this->belongsTo(Employee::class, 'user_id', 'user_id');
     }
 }

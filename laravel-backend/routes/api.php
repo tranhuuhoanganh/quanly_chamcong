@@ -10,6 +10,7 @@ use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\DepartmentController;
 use App\Http\Controllers\Member\ExpalainationController;
 use App\Http\Controllers\Member\GetUserController;
+use App\Http\Controllers\Member\LeaveRequestController;
 use App\Http\Controllers\Member\PositionController;
 use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\RoleController;
@@ -94,7 +95,14 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-user','getUser');
         Route::post('/reject-expalaination', 'rejectExpalaination');
         Route::post('/approve-expalaination', 'approveExpalaination');
-  
+    });
+    Route::prefix('leave')->controller(LeaveRequestController::class)->group(function(){
+        Route::get('/get-loai','getLoai');
+        Route::post('/create-leave','createLeave');
+        Route::get('/get-leave','getLeave');
+        Route::get('/get-user','getUser');
+        Route::post('/reject-leave', 'rejectLeave');
+        Route::post('/approve-leave', 'approveLeave');
     });
 });
 

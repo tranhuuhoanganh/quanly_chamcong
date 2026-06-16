@@ -3,23 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đặt lại mật khẩu</title>
+  <title>Đơn nghỉ phép bị từ chối</title>
   <style>
     body { margin: 0; background: #f4f5f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     .wrapper { padding: 40px 16px; }
     .card { background: #ffffff; border-radius: 12px; overflow: hidden; max-width: 540px; margin: 0 auto; border: 1px solid #e8e8e8; }
-    .header { background: #1a7a4a; padding: 32px 40px 24px; text-align: center; }
+    .header { background: #c0392b; padding: 32px 40px 24px; text-align: center; }
     .header svg { display: block; margin: 0 auto 16px; }
     .header h1 { margin: 0; color: #ffffff; font-size: 20px; font-weight: 500; }
     .body { padding: 32px 40px; }
     .body p { margin: 0 0 14px; font-size: 15px; color: #555; line-height: 1.7; }
     .body p.lead { color: #111; }
-    .btn { display: block; background: #1a7a4a; color: #ffffff; text-decoration: none;
-           text-align: center; padding: 14px 24px; border-radius: 8px; font-size: 15px;
-           font-weight: 500; margin: 24px 0; }
+    .badge { display: inline-block; background: #fdecea; color: #c0392b; font-size: 13px;
+             font-weight: 500; padding: 4px 12px; border-radius: 6px; margin-bottom: 20px; }
     .divider { border: none; border-top: 1px solid #eee; margin: 24px 0; }
-    .fallback { font-size: 13px; color: #888; }
-    .fallback code { background: #f4f5f7; padding: 2px 6px; border-radius: 4px; font-size: 12px; word-break: break-all; }
     .footer { padding: 16px 40px 24px; text-align: center; }
     .footer p { margin: 0; font-size: 12px; color: #aaa; line-height: 1.6; }
     .ii a[href] { color: #ffffff !important; }
@@ -31,26 +28,20 @@
       <div class="header">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
           <circle cx="20" cy="20" r="20" fill="rgba(255,255,255,0.15)"/>
-          <path d="M20 12a5 5 0 0 1 5 5v2h1.5A1.5 1.5 0 0 1 28 20.5v8A1.5 1.5 0 0 1 26.5 30h-13A1.5 1.5 0 0 1 12 28.5v-8A1.5 1.5 0 0 1 13.5 19H15v-2a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v2h6v-2a3 3 0 0 0-3-3zm0 9a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" fill="white"/>
+          <path d="M20 11a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 3a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1zm0 7.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="white"/>
         </svg>
-        <h1>Đặt lại mật khẩu</h1>
+        <h1>Đơn nghỉ phép bị từ chối</h1>
       </div>
 
       <div class="body">
         <p class="lead">Xin chào,</p>
-        <p>Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Nhấn vào nút bên dưới để tiếp tục.</p>
-
-        <a href="{{ $resetUrl ?? 'http://localhost:5173/reset-password/' . $token }}" class="btn">
-          Đặt lại mật khẩu
-        </a>
-
-        <p>Liên kết này sẽ hết hạn sau <strong>60 phút</strong>. Nếu bạn không yêu cầu đặt lại, hãy bỏ qua email này.</p>
+        <p>Rất tiếc, đơn xin nghỉ phép của bạn đã <strong>không được phê duyệt</strong>.</p>
+        <p>Nếu bạn có thắc mắc hoặc muốn biết thêm lý do, vui lòng liên hệ trực tiếp với quản lý của bạn.</p>
 
         <hr class="divider">
 
-        <p class="fallback">
-          Nếu nút không hoạt động, sao chép và dán liên kết sau vào trình duyệt:<br>
-          <code>{{ url('/reset-password/' . $token) }}</code>
+        <p style="font-size: 13px; color: #888;">
+          Nếu bạn cho rằng đây là nhầm lẫn, hãy liên hệ phòng nhân sự để được hỗ trợ.
         </p>
       </div>
 

@@ -1,51 +1,63 @@
 <template>
     <div>
-        <div class="card-body p-2">   <!-- Giảm padding -->
-            
+        <div class="card-body p-1"> <!-- Giảm padding -->
+
             <!-- Từ ngày -->
             <div class="mb-2">
                 <label class="form-label fw-semibold mb-1">Từ ngày</label>
-                <input v-model="form.tu_ngay" type="date" class="form-control custom-input-sm" />
+                <input v-model="form.tu_ngay" type="date" class="form-control custom-input-sm"
+                    :class="{ 'is-invalid': errors.tu_ngay }" />
+                <div class="invalid-feedback" v-if="errors.tu_ngay">
+                    {{ errors.tu_ngay[0] }}
+                </div>
             </div>
 
             <!-- Đến ngày -->
-            <div class="mb-2">
+            <div class="mb-3">
                 <label class="form-label fw-semibold mb-1">Đến ngày</label>
-                <input v-model="form.den_ngay" type="date" class="form-control custom-input-sm" />
+                <input v-model="form.den_ngay" type="date" class="form-control custom-input-sm"
+                    :class="{ 'is-invalid': errors.den_ngay }" />
+                <div class="invalid-feedback" v-if="errors.den_ngay">
+                    {{ errors.den_ngay[0] }}
+                </div>
             </div>
 
-            <!-- Dự án -->
-            <div class="mb-2">
-                <label class="form-label fw-semibold mb-1">Chọn dự án</label>
-                <select v-model="form.du_an" class="form-select custom-input-sm">
-                    <option value="">~Chọn dự án đang tham gia</option>
-                    <option v-for="da in danhSachDuAn" :key="da.id" :value="da.id">
-                        {{ da.ten }}
-                    </option>
-                </select>
+            <div class="mb-3">
+                <label class="form-label fw-semibold mb-1">Số giờ nghỉ</label>
+                <input v-model="form.gio" type="number" class="form-control custom-input-sm"
+                    :class="{ 'is-invalid': errors.gio }" />
+                <div class="invalid-feedback" v-if="errors.gio">
+                    {{ errors.gio[0] }}
+                </div>
             </div>
 
             <!-- Loại nghỉ -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label class="fw-semibold mb-2 d-block text-dark">Loại nghỉ:</label>
                 <div class="row g-2">
-                    <div v-for="loai in danhSachLoaiNghi" :key="loai.value" class="col-6 col-md-4 col-lg-3">
+                    <div v-for="loai in danhSachLoaiNghi" :key="loai.type_id" class="col-6 col-md-4 col-lg-3">
                         <div class="form-check">
                             <input v-model="form.loai_nghi" class="form-check-input custom-radio-sm" type="radio"
-                                :value="loai.value" :id="'loai_' + loai.value" />
-                            <label class="form-check-label" :for="'loai_' + loai.value">
-                                {{ loai.label }}
+                                :value="loai.type_id" :class="{ 'is-invalid': errors.loai_nghi }" />
+                            <label class="form-check-label" :for="loai.type_id">
+                                {{ loai.type_name }}
                             </label>
                         </div>
                     </div>
                 </div>
+                <div class="invalid-feedback" v-if="errors.loai_nghi">
+                    {{ errors.loai_nghi[0] }}
+                </div>
             </div>
 
             <!-- Lý do nghỉ -->
-            <div class="mb-2">
+            <div class="mb-3">
                 <label class="form-label fw-semibold mb-1">Lý do nghỉ</label>
-                <textarea v-model="form.ly_do" class="form-control custom-input-sm" rows="3"
-                    placeholder="Lý do nghỉ"></textarea>
+                <textarea v-model="form.ly_do" class="form-control custom-input-sm" rows="3" placeholder="Lý do nghỉ"
+                    :class="{ 'is-invalid': errors.ly_do }"></textarea>
+                <div class="invalid-feedback" v-if="errors.ly_do">
+                    {{ errors.ly_do[0] }}
+                </div>
             </div>
 
             <!-- Nút gửi -->
@@ -59,43 +71,63 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-const danhSachLoaiNghi = [
-    { value: 'phep_nam', label: 'Nghỉ phép năm' },
-    { value: 'thai_san', label: 'Nghỉ thai sản' },
-    { value: 'khong_luong', label: 'Nghỉ phép không hưởng lương' },
-    { value: 'benh', label: 'Nghỉ phép bệnh' },
-    { value: 'bu', label: 'Nghỉ phép bù' },
-    { value: 'ket_hon', label: 'Nghỉ kết hôn' },
-    { value: 'hoc_tap', label: 'Nghỉ phép học tập, đào tạo' },
-    { value: 'tang', label: 'Nghỉ tang' },
-]
-
-const danhSachDuAn = ref([
-    { id: 1, ten: 'Dự án A' },
-    { id: 2, ten: 'Dự án B' },
-    { id: 3, ten: 'Dự án C' },
-])
+import { ref, reactive, onMounted } from 'vue'
+import api from '../../../axios'
+import { useToast } from 'vue-toastification'
+const danhSachLoaiNghi = ref([])
+const errors = ref({})
+const toast = useToast()
+const getLoai = async () => {
+    const res = await api.get('leave/get-loai')
+    danhSachLoaiNghi.value = res.data
+}
 
 const form = reactive({
     tu_ngay: '',
     den_ngay: '',
+    gio: '',
     du_an: '',
     loai_nghi: '',
     ly_do: '',
 })
+const guiDon = async () => {
+    try {
+        const res = await api.post('leave/create-leave', form)
+        toast.success(res.data.message)
+        Object.assign(form, {
+        tu_ngay: '',
+        den_ngay: '',
+        gio: '',
+        du_an: '',
+        loai_nghi: '',
+        ly_do: '',
+    })
 
-const guiDon = () => {
-    console.log('Dữ liệu gửi đơn:', form)
+    errors.value = {}
+    } catch (error) {
+            console.log(error.response.data)
+
+        errors.value = error.response?.data?.errors || {}
+
+        if (error.response?.data?.message) {
+            toast.error(error.response.data.message)
+        }
+    }
 }
+onMounted(() => {
+    getLoai()
+})
 </script>
 
 <style scoped>
 .custom-input-sm {
     border-radius: 8px !important;
-    padding: 7px 12px !important;     /* Giảm padding */
-    font-size: 0.93rem !important;    /* Nhỏ hơn tí */
-    min-height: 40px;                 /* Giảm chiều cao */
+    padding: 7px 12px !important;
+    /* Giảm padding */
+    font-size: 0.93rem !important;
+    /* Nhỏ hơn tí */
+    min-height: 40px;
+    /* Giảm chiều cao */
 }
 
 .custom-input-sm:focus {
@@ -123,7 +155,8 @@ const guiDon = () => {
     border-radius: 8px;
     font-size: 1.02rem;
     font-weight: 600;
-    padding: 9px 28px !important;     /* Giảm kích thước nút */
+    padding: 9px 28px !important;
+    /* Giảm kích thước nút */
 }
 
 .btn-submit-custom:hover {
