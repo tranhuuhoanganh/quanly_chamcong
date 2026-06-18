@@ -23,6 +23,7 @@
     import ExplanationApproval from '../components/member/Orders/Explanation-approval.vue';
     import CreateLeave from '../components/member/Leave/CreateLeave.vue'
     import LeaveApproval from '../components/member/Orders/Leave-approval.vue'
+    import AnnualLeave from '../components/member/Leave/AnnualLeave.vue'
     const routes = [
         // Auth
         {
@@ -136,6 +137,12 @@
                     component: LeaveApproval,
                     meta: {
                         title: 'Phê duyệt nghỉ phép'
+                    }
+                },{
+                    path: '/leave/annual-leave',
+                    component: AnnualLeave,
+                    meta: {
+                        title: 'Phép năm'
                     }
                 },
             ]

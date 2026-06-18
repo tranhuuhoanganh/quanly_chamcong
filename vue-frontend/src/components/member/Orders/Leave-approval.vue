@@ -14,7 +14,6 @@
                             <th class="py-3">Ngày giải trình</th>
                             <th class="py-3">Nghỉ từ ngày</th>
                             <th class="py-3">Nghỉ đến ngày</th>
-
                             <th class="py-3">Loại</th>
                             <th class="py-3">Trạng thái</th>
                             <th class="py-3 text-center">Action</th>
