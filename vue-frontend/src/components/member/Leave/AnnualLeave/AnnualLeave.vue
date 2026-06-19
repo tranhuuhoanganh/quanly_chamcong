@@ -12,28 +12,28 @@
             <div class="col">
                 <div class="card-stat">
                     <div class="title">Đã sử dụng</div>
-                    <div class="value text-success">5</div>
+                    <div class="value text-success">{{ countAnnuals }}</div>
                 </div>
             </div>
 
             <div class="col">
                 <div class="card-stat">
                     <div class="title">Còn lại</div>
-                    <div class="value text-success">7</div>
+                    <div class="value text-success">{{12 - countAnnuals }}</div>
                 </div>
             </div>
 
             <div class="col">
                 <div class="card-stat">
                     <div class="title">Không lương</div>
-                    <div class="value text-success">2</div>
+                    <div class="value text-success">{{ noSalarys }}</div>
                 </div>
             </div>
 
             <div class="col">
                 <div class="card-stat">
                     <div class="title">Chờ duyệt</div>
-                    <div class="value text-success">2</div>
+                    <div class="value text-success">{{ awaitingApprovals }}</div>
                 </div>
             </div>
         </div>
@@ -124,8 +124,8 @@
                 </nav>
             </div>
         </div>
-        <AnnualLeaveDetail v-if="showDetailleave" :leave="selectDetailleave"
-            @close="showDetailleave = false" @update="getleave" />
+        <AnnualLeaveDetail v-if="showDetailleave" :leave="selectDetailleave" @close="showDetailleave = false"
+            @update="getleave" />
     </div>
 </template>
 <script setup>
@@ -140,11 +140,17 @@ const formData = reactive({
 const toast = useToast()
 const showDetailleave = ref(false)
 const leaves = ref([])
-const { currentPage, totalPages, pagination, changePage, reset } = usePagination(leaves, 5)
+const countAnnuals = ref(0)
+const noSalarys = ref(0)
+const awaitingApprovals = ref(0)
+const { currentPage, totalPages, pagination, changePage, reset } = usePagination(leaves, 4)
 
 const getleave = async () => {
     const res = await api.get(`leave/get-leave-user`)
-    leaves.value = res.data
+    countAnnuals.value = res.data.countAnnual
+    noSalarys.value = res.data.noSalary
+    awaitingApprovals.value = res.data.awaitingApproval
+    leaves.value = res.data.leave
     reset()
 }
 
@@ -158,6 +164,7 @@ const statusMap = {
     1: 'Đã duyệt',
     2: 'Từ chối'
 }
+
 onMounted(() => {
     getleave()
 }

@@ -59,8 +59,22 @@ class LeaveRequestController extends Controller
     }
     public function getLeaveUser()
     {
+        $countAnnual = LeaveRequest::where([
+            ['type_id', 1],
+            ['user_id',Auth::id()],
+            ['status_request', 1],
+        ])->count();
+        $noSalary = LeaveRequest::where([
+            ['type_id', 4],
+            ['user_id',Auth::id()],
+            ['status_request', 1],
+        ])->count();
+        $awaitingApproval= LeaveRequest::where([
+            ['user_id',Auth::id()],
+            ['status_request', 0],
+        ])->count();
         $leave = LeaveRequest::with('leaveType:type_id,type_name')->where('user_id', Auth::id())->orderBy('request_id', 'desc')->get();
-        return response()->json($leave);
+        return response()->json(['awaitingApproval'=>$awaitingApproval,'noSalary'=>$noSalary,'leave'=>$leave, 'countAnnual'=>$countAnnual]);
     }
     public function approveLeave(Request $request)
     {
