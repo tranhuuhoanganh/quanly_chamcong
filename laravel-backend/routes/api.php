@@ -104,6 +104,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/reject-leave', 'rejectLeave');
         Route::post('/approve-leave', 'approveLeave');
         Route::get('/get-leave-user','getLeaveUser');
+        Route::put('/update/{id}','editLeave');
+
     });
 });
 

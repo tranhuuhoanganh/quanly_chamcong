@@ -59,16 +59,16 @@ class LeaveRequestController extends Controller
     }
     public function getLeaveUser()
     {
-        $leave = LeaveRequest::with('leaveType:type_id,type_name')->where('user_id',Auth::id())->orderBy('request_id', 'desc')->get();
+        $leave = LeaveRequest::with('leaveType:type_id,type_name')->where('user_id', Auth::id())->orderBy('request_id', 'desc')->get();
         return response()->json($leave);
     }
     public function approveLeave(Request $request)
     {
+        $leaveRequest = LeaveRequest::find($request->request_id);
+        if (!$leaveRequest) {
+            return response()->json(['message' => 'Không có Leave'], 422);
+        }
         try {
-            $leaveRequest = LeaveRequest::find($request->request_id);
-            if (!$leaveRequest) {
-                return response()->json(['message' => 'Không có Leave'], 422);
-            }
             $leaveRequest->update([
                 'status_request' => 1
             ]);
@@ -84,13 +84,15 @@ class LeaveRequestController extends Controller
             return response()->json(['message' => 'Duyệt nghỉ phép thất bại!', $e->getMessage()], 500);
         }
     }
+
     public function rejectLeave(Request $request)
     {
+        $leaveRequest = LeaveRequest::find($request->request_id);
+        if (!$leaveRequest) {
+            return response()->json(['message' => 'Không có Leave'], 422);
+        }
         try {
-            $leaveRequest = LeaveRequest::find($request->request_id);
-            if (!$leaveRequest) {
-                return response()->json(['message' => 'Không có Leave'], 422);
-            }
+
             $leaveRequest->update([
                 'status_request' => 2
             ]);
@@ -103,6 +105,34 @@ class LeaveRequestController extends Controller
             return response()->json(['message' => 'Từ chối nghỉ phép thành công'], 200);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Từ chối nghỉ phép thất bại!', $e->getMessage()], 500);
+        }
+    }
+    public function editLeave(Request $request, $id)
+    {
+        $leaveRequest = LeaveRequest::find($id);
+        if (!$leaveRequest) {
+            return response()->json(['message' => 'Không có Leave'], 422);
+        }
+        try {
+            $start = Carbon::parse($request->tu_ngay);
+            $end = Carbon::parse($request->den_ngay);
+
+            $sum_days = $start->diffInDays($end) + 1;
+            $leaveRequest->update([
+                'start_date' => $request->tu_ngay,
+                'end_date' => $request->den_ngay,
+                'sum_days' => $sum_days,
+                'hours' => $request->gio,
+                'content' => $request->ly_do,
+                'type_id' => $request->type_id,
+            ]);
+
+            return response()->json(['message' => 'Update thành công'], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Update thất bại!',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }

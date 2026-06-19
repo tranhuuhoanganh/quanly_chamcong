@@ -124,13 +124,16 @@
                 </nav>
             </div>
         </div>
+        <AnnualLeaveDetail v-if="showDetailleave" :leave="selectDetailleave"
+            @close="showDetailleave = false" @update="getleave" />
     </div>
 </template>
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import api from '../../../axios.js'
+import api from '../../../../axios.js'
 import { useToast } from 'vue-toastification'
-import { usePagination } from '../../../usePagination.js'
+import AnnualLeaveDetail from './AnnualLeaveDetail.vue'
+import { usePagination } from '../../../../usePagination.js'
 const formData = reactive({
     date: ''
 })
