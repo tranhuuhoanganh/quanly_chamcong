@@ -103,6 +103,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-user','getUser');
         Route::post('/reject-leave', 'rejectLeave');
         Route::post('/approve-leave', 'approveLeave');
+        Route::get('/get-leave-user','getLeaveUser');
     });
 });
 

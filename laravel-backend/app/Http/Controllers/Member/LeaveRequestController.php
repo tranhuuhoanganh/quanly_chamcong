@@ -57,7 +57,11 @@ class LeaveRequestController extends Controller
         $user = Employee::where('user_id', $request->user_id)->first();
         return response()->json($user);
     }
-
+    public function getLeaveUser()
+    {
+        $leave = LeaveRequest::with('leaveType:type_id,type_name')->where('user_id',Auth::id())->orderBy('request_id', 'desc')->get();
+        return response()->json($leave);
+    }
     public function approveLeave(Request $request)
     {
         try {

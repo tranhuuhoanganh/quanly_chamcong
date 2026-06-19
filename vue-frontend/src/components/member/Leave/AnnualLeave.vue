@@ -59,7 +59,37 @@
                         </thead>
 
                         <tbody>
+                            <tr v-for="(leave, index) in pagination.items" :key="leave.request_id">
 
+                                <td class="ps-4">
+                                    {{ index + 1 }}
+                                </td>
+
+                                <td>
+                                    {{ new Date(leave.create_date).toLocaleDateString('vi-VN') }}
+                                </td>
+                                <td>
+                                    {{ new Date(leave.start_date).toLocaleDateString('vi-VN') }}
+                                </td>
+                                <td>
+                                    {{ new Date(leave.end_date).toLocaleDateString('vi-VN') }}
+                                </td>
+
+                                <td>
+                                    {{ leave.leave_type.type_name }}
+                                </td>
+
+                                <td>
+                                    {{ statusMap[leave.status_request] || 'Không xác định' }} </td>
+
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-light border me-2" style="border-radius:10px;"
+                                        @click="openEditModal(leave)">
+                                        <i class="fa-solid fa-list-check"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
 
 
                         </tbody>
@@ -69,11 +99,67 @@
                 </div>
 
             </div>
-
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center px-4 py-3 border-top">
+                <small class="text-muted">
+                    Hiển thị {{ pagination.start + 1 }}–{{ pagination.end }} / {{ leaves.length }} bản ghi
+                </small>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                            <button class="page-link" @click="changePage(currentPage - 1)">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        </li>
+                        <li v-for="page in totalPages" :key="page" class="page-item"
+                            :class="{ active: page === currentPage }">
+                            <button class="page-link" @click="changePage(page)">{{ page }}</button>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                            <button class="page-link" @click="changePage(currentPage + 1)">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </template>
+<script setup>
+import { reactive, ref, onMounted } from 'vue'
+import api from '../../../axios.js'
+import { useToast } from 'vue-toastification'
+import { usePagination } from '../../../usePagination.js'
+const formData = reactive({
+    date: ''
+})
+const toast = useToast()
+const showDetailleave = ref(false)
+const leaves = ref([])
+const { currentPage, totalPages, pagination, changePage, reset } = usePagination(leaves, 5)
 
+const getleave = async () => {
+    const res = await api.get(`leave/get-leave-user`)
+    leaves.value = res.data
+    reset()
+}
+
+const selectDetailleave = ref(null)
+const openEditModal = (leave) => {
+    selectDetailleave.value = leave
+    showDetailleave.value = true
+}
+const statusMap = {
+    0: 'Chưa duyệt',
+    1: 'Đã duyệt',
+    2: 'Từ chối'
+}
+onMounted(() => {
+    getleave()
+}
+)
+</script>
 <style scoped>
 .card-stat {
     background: #fff;
