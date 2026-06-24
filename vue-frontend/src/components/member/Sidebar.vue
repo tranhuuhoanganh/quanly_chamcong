@@ -228,6 +228,8 @@ const menus = [
     children: [
       { to: "/orders/explanation-approval", label: "Phê duyệt giải trình" },
       { to: "/orders/leave-approval", label: "Phê duyệt nghỉ phép" },
+      { to: "/orders/ot-approval", label: "Phê duyệt tăng ca" },
+
     ],
   },
 

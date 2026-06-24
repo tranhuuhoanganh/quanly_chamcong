@@ -5,12 +5,13 @@ use App\Http\Controllers\Auth\ForgotpasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetpasswordController;
 use App\Http\Controllers\Member\ConfirmExplainationController;
-use App\Http\Controllers\Member\EmployeeController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\DepartmentController;
+use App\Http\Controllers\Member\EmployeeController;
 use App\Http\Controllers\Member\ExpalainationController;
 use App\Http\Controllers\Member\GetUserController;
 use App\Http\Controllers\Member\LeaveRequestController;
+use App\Http\Controllers\Member\OtController;
 use App\Http\Controllers\Member\PositionController;
 use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\RoleController;
@@ -107,7 +108,15 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/approve-leave', 'approveLeave');
         Route::get('/get-leave-user','getLeaveUser');
         Route::put('/update/{id}','editLeave');
-
+    });
+    Route::prefix('ot')->controller(OtController::class)->group(function(){
+        Route::get('/get-loai','getLoai');
+        Route::get('/get-ot','getOt');
+        Route::get('/get-user','getUser');
+        Route::post('/reject-ot', 'rejectOt');
+        Route::post('/approve-ot', 'approveOt');
+        Route::get('/get-ot-user','getotUser');
+        Route::put('/update/{id}','editot');
     });
 });
 

@@ -70,7 +70,6 @@ class TimeEntryController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Check in thất bại', $e->getMessage()], 422);
         }
-
     }
 
     public function CreateCheckout(Request $request)
@@ -105,13 +104,12 @@ class TimeEntryController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Check out thất bại', $e->getMessage()], 422);
         }
-
     }
 
     public function getAttendance()
     {
         $attendance = TimeEntry::with('workingDay')
-            ->where('user_id',Auth::id())
+            ->where('user_id', Auth::id())
             ->orderBy('time_entry_id', 'desc')
             ->get();
 
@@ -122,16 +120,16 @@ class TimeEntryController extends Controller
             $lateMinutes = $item->number_minutes_late % 60;
 
             $item->late_time_text =
-                ($lateHours > 0 ? $lateHours.' giờ ' : '').
-                ($lateMinutes > 0 ? $lateMinutes.' phút' : '');
+                ($lateHours > 0 ? $lateHours . ' giờ ' : '') .
+                ($lateMinutes > 0 ? $lateMinutes . ' phút' : '');
 
             // Về sớm
             $quitHours = floor($item->number_minutes_quit_early / 60);
             $quitMinutes = $item->number_minutes_quit_early % 60;
 
             $item->quit_early_text =
-                ($quitHours > 0 ? $quitHours.' giờ ' : '').
-                ($quitMinutes > 0 ? $quitMinutes.' phút' : '');
+                ($quitHours > 0 ? $quitHours . ' giờ ' : '') .
+                ($quitMinutes > 0 ? $quitMinutes . ' phút' : '');
 
             return $item;
         });
@@ -151,23 +149,24 @@ class TimeEntryController extends Controller
                 'time_entry_id' => $request->time_entry_id,
             ]);
 
-            return response()->json([ 'message' => 'Bạn đã giải trình thành công!'], 200);
+            return response()->json(['message' => 'Bạn đã giải trình thành công!'], 200);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Bạn đã giải trình thất bại', $e->getMessage()], 422);
         }
     }
-    public function createOt(Request $request){
+    public function createOt(Request $request)
+    {
         try {
-           $start = Carbon::parse($request->start_time);
-$end = Carbon::parse($request->end_time);
+            $start = Carbon::parse($request->start_time);
+            $end = Carbon::parse($request->end_time);
 
-// Qua ngày hôm sau
-if ($end->lessThan($start)) {
-    $end->addDay();
-}
+            // Qua ngày hôm sau
+            if ($end->lessThan($start)) {
+                $end->addDay();
+            }
 
-$totalMinutes = $start->diffInMinutes($end);
-$sum_time = round($totalMinutes / 60, 2);
+            $totalMinutes = $start->diffInMinutes($end);
+            $sum_time = round($totalMinutes / 60, 2);
             Ot::create([
                 'ot_date' => Carbon::now(),
                 'start_time' => $request->start_time,
@@ -178,8 +177,7 @@ $sum_time = round($totalMinutes / 60, 2);
                 'user_id' => Auth::id(),
                 'type_id' => $request->type_id,
             ]);
-        return response()->json([ 'message' => 'Bạn đã xin Ot thành công!'], 200);
-
+            return response()->json(['message' => 'Bạn đã xin Ot thành công!'], 200);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Bạn đã xin OT thất bại', $e->getMessage()], 422);
         }
