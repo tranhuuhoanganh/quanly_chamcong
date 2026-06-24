@@ -10,6 +10,11 @@
                     Check out
                 </button>
             </div>
+            <div>
+                <button class="btn action-btn rounded-pill px-4 me-3" @click="openOtModal(WorkingDays.type_id)">
+                    Check OT
+                </button>
+            </div>
         </div>
 
         <!-- Summary -->
@@ -96,6 +101,8 @@
         </div>
 
         <Expalaination v-if="ShowModal" :Expalaination="SelectExpalaination" @close="ShowModal = false" />
+        <OtLeave v-if="ShowOtModal" :Ot="SelectOt" @close="ShowOtModal = false" />
+
     </div>
 </template>
 
@@ -106,18 +113,25 @@ import { useToast } from 'vue-toastification'
 import Expalaination from './Expalaination.vue'
 import { usePagination } from '../../../usePagination.js'
 import '../../../css/Attendance.css'
+import OtLeave from './OtLeave.vue'
 
 const toast = useToast()
 const ShowModal = ref(false)
+const ShowOtModal =ref(false)
 const WorkingDays = ref({})
 const Attendances = ref([])
 const SelectExpalaination = ref(null)
-
-    const { currentPage, totalPages, pagination, changePage, reset } = usePagination(Attendances, 5)
+const SelectOt = ref(null)
+const { currentPage, totalPages, pagination, changePage, reset } = usePagination(Attendances, 5)
 
 const openModal = (Attendance) => {
     SelectExpalaination.value = Attendance
     ShowModal.value = true
+}
+
+const openOtModal = (Ot) => {
+    SelectOt.value = Ot
+    ShowOtModal.value = true
 }
 
 const getWorkingDay = async () => {

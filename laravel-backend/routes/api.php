@@ -84,6 +84,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-attendance','getAttendance');
         Route::post('/create-expalaination','createExpalaination');
         Route::get('/get-expalaination','getExpalaination');
+        Route::post('/create-ot','createOt');
+
     });
     Route::prefix('expalaination')->controller(ExpalainationController::class)->group(function(){
         Route::get('/get-expalaination','getExpalaination');

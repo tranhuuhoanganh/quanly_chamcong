@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('confirm_results');
             $table->integer('approve_id');
             $table->foreignId('request_id')
-            ->constrained('Leave Requests', 'request_id')
+            ->constrained('leave_Requests', 'request_id')
             ->onDelete('cascade');
             $table->timestamps();
         });

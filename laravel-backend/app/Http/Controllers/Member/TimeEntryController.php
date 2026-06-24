@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\AttendanceCheck;
 use App\Models\Expalaination;
+use App\Models\Ot;
 use App\Models\TimeEntry;
 use App\Models\WorkingDay;
 use Carbon\Carbon;
@@ -142,7 +143,7 @@ class TimeEntryController extends Controller
     {
 
         try {
-            $aa = Expalaination::create([
+            Expalaination::create([
                 'create_date' => $request->create_date,
                 'reason' => $request->reason,
                 'type' => $request->type,
@@ -150,9 +151,37 @@ class TimeEntryController extends Controller
                 'time_entry_id' => $request->time_entry_id,
             ]);
 
-            return response()->json(['aa' => $aa, 'message' => 'Bạn đã giải trình thành công!'], 200);
+            return response()->json([ 'message' => 'Bạn đã giải trình thành công!'], 200);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Bạn đã giải trình thất bại', $e->getMessage()], 422);
+        }
+    }
+    public function createOt(Request $request){
+        try {
+           $start = Carbon::parse($request->start_time);
+$end = Carbon::parse($request->end_time);
+
+// Qua ngày hôm sau
+if ($end->lessThan($start)) {
+    $end->addDay();
+}
+
+$totalMinutes = $start->diffInMinutes($end);
+$sum_time = round($totalMinutes / 60, 2);
+            Ot::create([
+                'ot_date' => Carbon::now(),
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'sum_hours_ot' => $sum_time,
+                'reason' => $request->reason,
+                'status' => 0,
+                'user_id' => Auth::id(),
+                'type_id' => $request->type_id,
+            ]);
+        return response()->json([ 'message' => 'Bạn đã xin Ot thành công!'], 200);
+
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Bạn đã xin OT thất bại', $e->getMessage()], 422);
         }
     }
 }
