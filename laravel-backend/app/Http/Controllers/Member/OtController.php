@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnnualLeave;
 use App\Models\ConfirmOt;
 use App\Models\Employee;
 use App\Models\Ot;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Mail;
 
 class OtController extends Controller
 {
-    public function getLoai(){
+    public function getLoai()
+    {
         return response()->json(Type::all());
     }
     public function getUser(Request $request)
@@ -27,9 +29,31 @@ class OtController extends Controller
         $OT = Ot::with('type:type_id,type_name')->where('status', 0)->get();
         return response()->json($OT);
     }
-    public function getotUser()  {
-        $OT = Ot::with('type:type_id,type_name')->where('user_id',Auth::id())->get();
-        return response()->json($OT);
+    public function getotUser()
+    {
+        $phepOt = AnnualLeave::where('user_id', Auth::id())
+            ->where('year', now()->year)
+            ->value('ot_converted_number');
+        $chuaDuyet = Ot::where([
+            ['user_id', Auth::id()],
+            ['status', 0],
+        ])->count();
+        $daDuyet = Ot::where([
+            ['user_id', Auth::id()],
+            ['status', 1],
+        ])->count();
+        $tuChoi = Ot::where([
+            ['user_id', Auth::id()],
+            ['status', 2],
+        ])->count();
+        $OT = Ot::with('type:type_id,type_name')->where('user_id', Auth::id())->get();
+        return response()->json([
+            'phepOt' => $phepOt,
+            'chuaDuyet' => $chuaDuyet,
+            'daDuyet' => $daDuyet,
+            'tuChoi' => $tuChoi,
+            'Ot' => $OT,
+        ]);
     }
     public function approveOt(Request $request)
     {
@@ -81,7 +105,8 @@ class OtController extends Controller
             return response()->json(['message' => 'Từ chối nghỉ phép thất bại!', $e->getMessage()], 500);
         }
     }
-    public function editOt(Request $request,$id){
+    public function editOt(Request $request, $id)
+    {
         $OT = Ot::find($id);
         if (!$OT) {
             return response()->json(['message' => 'Không có OT'], 422);
@@ -93,7 +118,6 @@ class OtController extends Controller
                 'reason' => $request->reason,
             ]);
             return response()->json(['message' => 'Bạn đã sửa phép OT thành công'], 200);
-
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Bạn đã sửa phép OT thất bại!', $e->getMessage()], 500);
         }

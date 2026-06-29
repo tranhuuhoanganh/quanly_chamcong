@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateLeaveRequest;
 use App\Mail\LeaveApproveMail;
 use App\Mail\LeaveRejectedMail;
+use App\Models\AnnualLeave;
 use App\Models\ConfirmLeaveRequest;
 use App\Models\Employee;
 use App\Models\LeaveRequest;
@@ -59,6 +60,9 @@ class LeaveRequestController extends Controller
     }
     public function getLeaveUser()
     {
+        $phepNam = AnnualLeave::where('user_id', Auth::id())
+        ->where('year', now()->year)
+        ->value('annual_leave_number');
         $countAnnual = LeaveRequest::where([
             ['type_id', 1],
             ['user_id',Auth::id()],
@@ -74,7 +78,7 @@ class LeaveRequestController extends Controller
             ['status_request', 0],
         ])->count();
         $leave = LeaveRequest::with('leaveType:type_id,type_name')->where('user_id', Auth::id())->orderBy('request_id', 'desc')->get();
-        return response()->json(['awaitingApproval'=>$awaitingApproval,'noSalary'=>$noSalary,'leave'=>$leave, 'countAnnual'=>$countAnnual]);
+        return response()->json(['phepNam'=>$phepNam,'awaitingApproval'=>$awaitingApproval,'noSalary'=>$noSalary,'leave'=>$leave, 'countAnnual'=>$countAnnual]);
     }
     public function approveLeave(Request $request)
     {

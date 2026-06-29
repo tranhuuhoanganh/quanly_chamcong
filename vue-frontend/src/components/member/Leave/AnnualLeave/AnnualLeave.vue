@@ -5,7 +5,7 @@
             <div class="col">
                 <div class="card-stat">
                     <div class="title">Phép được cấp</div>
-                    <div class="value text-success">12</div>
+                    <div class="value text-success">{{ phepNams }}</div>
                 </div>
             </div>
 
@@ -19,7 +19,7 @@
             <div class="col">
                 <div class="card-stat">
                     <div class="title">Còn lại</div>
-                    <div class="value text-success">{{12 - countAnnuals }}</div>
+                    <div class="value text-success">{{phepNams - countAnnuals }}</div>
                 </div>
             </div>
 
@@ -142,6 +142,7 @@ const showDetailleave = ref(false)
 const leaves = ref([])
 const countAnnuals = ref(0)
 const noSalarys = ref(0)
+const phepNams =ref(0)
 const awaitingApprovals = ref(0)
 const { currentPage, totalPages, pagination, changePage, reset } = usePagination(leaves, 4)
 
@@ -149,6 +150,7 @@ const getleave = async () => {
     const res = await api.get(`leave/get-leave-user`)
     countAnnuals.value = res.data.countAnnual
     noSalarys.value = res.data.noSalary
+    phepNams.value = res.data.phepNam
     awaitingApprovals.value = res.data.awaitingApproval
     leaves.value = res.data.leave
     reset()
