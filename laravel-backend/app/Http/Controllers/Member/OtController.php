@@ -62,6 +62,26 @@ class OtController extends Controller
             return response()->json(['message' => 'Không có OT'], 422);
         }
         try {
+            $annualLeave = AnnualLeave::where('user_id', $OT->user_id)
+                ->where('year', now()->year)
+                ->first();
+
+            if ($annualLeave) {
+
+                // Tổng giờ OT sau khi duyệt
+                $totalHours = $annualLeave->ot_converted_number + $OT->sum_hours_ot;
+
+                // Số ngày phép được cộng thêm
+                $leaveDays = floor($totalHours / 8);
+
+                // Giờ OT còn dư
+                $remainingHours = $totalHours % 8;
+
+                $annualLeave->update([
+                    'annual_leave_number' => $annualLeave->annual_leave_number + $leaveDays,
+                    'ot_converted_number' => $remainingHours,
+                ]);
+            }
             $OT->update([
                 'status' => 1
             ]);
@@ -72,6 +92,7 @@ class OtController extends Controller
                 'approve_id' => Auth::id(),
                 'ot_id' => $request->ot_id,
             ]);
+
             // Mail::to($OT->employee->email)->send(new OtApproveMail($OT));
 
             return response()->json(['message' => 'Duyệt nghỉ phép thành công'], 200);
