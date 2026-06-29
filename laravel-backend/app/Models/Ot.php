@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ot extends Model
 {
     protected $table = 'ot';
+    protected $primaryKey = 'ot_id';
 
     protected $fillable = [
         'ot_date',

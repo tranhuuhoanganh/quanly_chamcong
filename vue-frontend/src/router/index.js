@@ -25,6 +25,7 @@
     import LeaveApproval from '../components/member/Orders/Leave-approval.vue'
     import AnnualLeave from '../components/member/Leave/AnnualLeave/AnnualLeave.vue'
     import OtApproval from '../components/member/Orders/Ot-approval.vue'
+    import OtLeave from '../components/member/Leave/OtLeave/OtLeave.vue'
     const routes = [
         // Auth
         {
@@ -150,6 +151,12 @@
                     component: OtApproval,
                     meta: {
                         title: 'Phê duyệt tăng ca'
+                    }
+                },{
+                    path: '/leave/ot-leave',
+                    component: OtLeave,
+                    meta: {
+                        title: 'Phép OT'
                     }
                 },
             ]

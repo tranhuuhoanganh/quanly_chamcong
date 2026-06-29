@@ -43,7 +43,7 @@
                             </td>
 
                             <td>
-                                {{ Ot.status_request == 0 ? 'Chưa duyệt' : 'Đã duyệt' }}
+                                {{ Ot.status == 0 ? 'Chưa duyệt' : 'Đã duyệt' }}
                             </td>
 
                             <td class="text-center" v-if="Ot.status == 0">
@@ -106,7 +106,6 @@ const { currentPage, totalPages, pagination, changePage, reset } = usePagination
 const getOt = async () => {
     const res = await api.get(`ot/get-ot`)
     Ots.value = res.data
-    console.log(Ots);
     reset()
 }
 

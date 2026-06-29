@@ -20,7 +20,7 @@ class DepartmentSeeder extends Seeder
                 'status' => 1,
                 'manager_id' => 1,
                 'created_at' => now(),
-'updated_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'depart_code' => 'HR',
@@ -29,7 +29,7 @@ class DepartmentSeeder extends Seeder
                 'status' => 1,
                 'manager_id' => 2,
                 'created_at' => now(),
-'updated_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'depart_code' => 'ACC',
@@ -38,9 +38,8 @@ class DepartmentSeeder extends Seeder
                 'status' => 1,
                 'manager_id' => 3,
                 'created_at' => now(),
-'updated_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }
-    
 }

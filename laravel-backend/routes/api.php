@@ -116,7 +116,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/reject-ot', 'rejectOt');
         Route::post('/approve-ot', 'approveOt');
         Route::get('/get-ot-user','getotUser');
-        Route::put('/update/{id}','editot');
+        Route::put('/update/{id}','editOt');
     });
 });
 

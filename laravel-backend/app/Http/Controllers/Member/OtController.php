@@ -27,7 +27,11 @@ class OtController extends Controller
         $OT = Ot::with('type:type_id,type_name')->where('status', 0)->get();
         return response()->json($OT);
     }
-    public function approveLeave(Request $request)
+    public function getotUser()  {
+        $OT = Ot::with('type:type_id,type_name')->where('user_id',Auth::id())->get();
+        return response()->json($OT);
+    }
+    public function approveOt(Request $request)
     {
         $OT = Ot::find($request->ot_id);
         if (!$OT) {
@@ -52,16 +56,16 @@ class OtController extends Controller
         }
     }
 
-    public function rejectLeave(Request $request)
+    public function rejectOt(Request $request)
     {
-        $OT = Ot::find($request->request_id);
+        $OT = Ot::find($request->ot_id);
         if (!$OT) {
-            return response()->json(['message' => 'Không có Leave'], 422);
+            return response()->json(['message' => 'Không có OT'], 422);
         }
         try {
 
             $OT->update([
-                'status_request' => 2
+                'status' => 2
             ]);
             ConfirmOt::create([
                 'sum_hours_cf' => $OT->sum_hours_ot,
@@ -75,6 +79,23 @@ class OtController extends Controller
             return response()->json(['message' => 'Từ chối nghỉ phép thành công'], 200);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Từ chối nghỉ phép thất bại!', $e->getMessage()], 500);
+        }
+    }
+    public function editOt(Request $request,$id){
+        $OT = Ot::find($id);
+        if (!$OT) {
+            return response()->json(['message' => 'Không có OT'], 422);
+        }
+        try {
+            $OT->update([
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'reason' => $request->reason,
+            ]);
+            return response()->json(['message' => 'Bạn đã sửa phép OT thành công'], 200);
+
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Bạn đã sửa phép OT thất bại!', $e->getMessage()], 500);
         }
     }
 }
