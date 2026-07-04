@@ -63,10 +63,10 @@
                                     {{ new Date(Ot.ot_date).toLocaleDateString('vi-VN') }}
                                 </td>
                                 <td>
-                                <td>{{ Ot.start_time.slice(0, 5) }}</td>
+                                <td>{{ Ot.start_time}}</td>
                                 </td>
                                 <td>
-                                <td>{{ Ot.end_time.slice(0, 5) }}</td>
+                                <td>{{ Ot.end_time }}</td>
                                 </td>
 
                                 <td>

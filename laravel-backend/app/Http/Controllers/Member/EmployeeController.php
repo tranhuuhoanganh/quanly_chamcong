@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\EmploymentContract;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -47,6 +48,16 @@ class EmployeeController extends Controller
                 'pos_id' => $request->pos_id,
                 'role_id' => $request->role_id,
                 'user_id' =>$user_id,
+            ]);
+            $contract_code = "HD - " . $request->emp_code;            
+            EmploymentContract::create([
+                'contract_code' => $contract_code,
+                'sign_date' => $request->start_date,
+                'start_date' => $request->start_date,
+                'end_date'=>$request->end_date,
+                'basic_salary' => $request->luongCoBan,
+                'insurance_salary' => $request->luongCoBan,
+                'allowance' => $request->phuCap
             ]);
             return response()->json(['message'=>'Create Employee successfully'],200);
 

@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade show d-block custom-modal" tabindex="-1">
 
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered custom-modal-width">
 
             <div class="modal-content border-0 rounded-4 shadow-lg">
 
@@ -30,7 +30,7 @@
                         <div class="row g-3">
 
                             <!-- LEFT -->
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
 
                                 <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary h-100">
 
@@ -137,7 +137,7 @@
                             </div>
 
                             <!-- RIGHT -->
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
 
                                 <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary h-100">
 
@@ -262,7 +262,82 @@
                                 </div>
 
                             </div>
+                            <div class="col-lg-4">
 
+                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary h-100">
+
+                                    <div class="card-body">
+
+                                        <h6 class="fw-bold d-flex align-items-center gap-2 mb-3">
+                                            <i class="fa-solid fa-briefcase text-success"></i>
+                                            Hợp đồng lao động
+                                        </h6>
+
+                                        <!-- Email -->
+                                        <div class="mb-3">
+
+                                            <label class="form-label fw-semibold">
+                                                Lương cơ bản
+                                            </label>
+
+                                            <input type="number" class="form-control rounded-4" v-model="formData.luongCoBan"
+                                                :class="{ 'is-invalid': errors.luongCoBan }">
+
+                                            <div class="invalid-feedback" v-if="errors.luongCoBan">
+                                                {{ errors.luongCoBan[0] }}
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Password -->
+                                        <div class="mb-3">
+
+                                            <label class="form-label fw-semibold">
+                                                Phụ cấp
+                                            </label>
+
+                                            <input type="number" class="form-control rounded-4"
+                                                v-model="formData.phuCap" :class="{ 'is-invalid': errors.phuCap }">
+
+                                            <div class="invalid-feedback" v-if="errors.phuCap">
+                                                {{ errors.phuCap[0] }}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="mb-3">
+
+                                            <label class="form-label fw-semibold">
+                                                Ngày hợp đồng
+                                            </label>
+
+                                            <input type="date" class="form-control rounded-4"
+                                                v-model="formData.start_date">
+                                            <div class="invalid-feedback" v-if="errors.start_date">{{ errors.start_date[0] }}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="mb-3">
+
+                                            <label class="form-label fw-semibold">
+                                                Hạn hợp đồng
+                                            </label>
+
+                                            <input type="date" class="form-control rounded-4"
+                                                v-model="formData.end_date">
+                                            <div class="invalid-feedback" v-if="errors.end_date">{{ errors.end_date[0] }}
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
 
                         <!-- Footer -->
@@ -312,6 +387,10 @@ const formData = reactive({
     emp_code: '',
     fullname: '',
     birthday: '',
+    luongCoBan:'',
+    phuCap:'',
+    start_date:'',
+    end_date:'',
     sex: '',
     email: '',
     password: '',
@@ -355,6 +434,10 @@ const saveEmployee = async () => {
 }
 </script>
 <style scoped>
+.custom-modal-width{
+        max-width: 1200px !important; 
+
+}
 .custom-modal {
     background: rgba(15, 23, 42, 0.55);
     backdrop-filter: blur(4px);
