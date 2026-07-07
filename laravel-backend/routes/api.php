@@ -37,7 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('logout',[AuthenticareController::class,'logout']);
     Route::prefix('profile')->controller(ProfileController::class)->group(function(){
         Route::get('/','getProfile');
-        Route::post('/update-profile', 'updateProfile');
+        Route::put('/update-profile/{id}', 'updateProfile');
         Route::post('/change-password', 'changePassword');
     });
     Route::prefix('department')->controller(DepartmentController::class)->group(function(){

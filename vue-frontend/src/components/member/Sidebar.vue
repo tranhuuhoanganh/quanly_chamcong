@@ -232,7 +232,23 @@ const menus = [
 
     ],
   },
-
+  {
+  key: "salary",
+  label: "Lương",
+  icon: `
+    <svg width="20" height="20" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 1v22"/>
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H7"/>
+    </svg>
+  `,
+  children: [
+    { to: "/salary/payroll", label: "Bảng lương" },
+    { to: "/salary/calculate", label: "Tính lương thưởng" },
+    { to: "/salary/reward", label: "Thưởng" },
+    { to: "/salary/penalty", label: "Khấu trừ" },
+  ],
+},
   // {
   //   key: "worklog",
   //   label: "Worklog",

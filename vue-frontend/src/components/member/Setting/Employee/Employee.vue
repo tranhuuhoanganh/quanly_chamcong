@@ -121,6 +121,7 @@ const openCreateModal = () =>{
 const getEmployee = async() =>{
     const res = await api.get(`employee`)
     employees.value = res.data
+    console.log(res);
 }
 onMounted(
     ()=>{

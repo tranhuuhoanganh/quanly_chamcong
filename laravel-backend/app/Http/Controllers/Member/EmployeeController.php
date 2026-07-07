@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Member;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\EmploymentContract;
+use App\Models\EmploymentContracts;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,8 @@ class EmployeeController extends Controller
         $employees = Employee::with([
             'department:depart_id,depart_name',
             'role:role_id,role_name',
-            'position:pos_id,pos_name'
+            'position:pos_id,pos_name',
+            'employmentContract'
         ])->get();
 
         return response()->json($employees);
@@ -33,9 +35,9 @@ class EmployeeController extends Controller
             ]);
             $user_id = $user->id;
             $department = Department::findOrFail($request->depart_id);
-            $manager_id= $department->manager_id;
+            $manager_id = $department->manager_id;
             Employee::create([
-                'emp_code'=> $request->emp_code,
+                'emp_code' => $request->emp_code,
                 'fullname' => $request->fullname,
                 'birthday' => $request->birthday,
                 'sex' => $request->sex,
@@ -47,29 +49,34 @@ class EmployeeController extends Controller
                 'depart_id' => $request->depart_id,
                 'pos_id' => $request->pos_id,
                 'role_id' => $request->role_id,
-                'user_id' =>$user_id,
+                'user_id' => $user_id,
             ]);
-            $contract_code = "HD - " . $request->emp_code;            
-            EmploymentContract::create([
+            $contract_code = "HD - " . $request->emp_code;
+            EmploymentContracts::create([
+                'user_id' => $user_id,
                 'contract_code' => $contract_code,
-                'sign_date' => $request->start_date,
+                'sign_date' => $request->sign_date,
                 'start_date' => $request->start_date,
-                'end_date'=>$request->end_date,
+                'end_date' => $request->end_date,
                 'basic_salary' => $request->luongCoBan,
                 'insurance_salary' => $request->luongCoBan,
                 'allowance' => $request->phuCap
             ]);
-            return response()->json(['message'=>'Create Employee successfully'],200);
-
+            return response()->json(['message' => 'Create Employee successfully'], 200);
         } catch (\Throwable $e) {
-            return response()->json(['message'=>'Lỗi',$e->getMessage()],422);
+            return response()->json([
+                'message' => 'Lỗi',
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ], 422);
         }
     }
-    public function updateEmployee(Request $request,$id)
+    public function updateEmployee(Request $request, $id)
     {
         $employee = Employee::find($id);
         if (!$employee) {
-            return response()->json('message','Employee not found');
+            return response()->json('message', 'Employee not found');
         }
         try {
             $userData = [
@@ -79,13 +86,13 @@ class EmployeeController extends Controller
             if ($request->filled('password')) {
                 $userData['password'] = Hash::make($request->password);
             }
-    
+
             User::findOrFail($employee->user_id)->update($userData);
 
             $department = Department::findOrFail($request->depart_id);
-            $manager_id= $department->manager_id;
+            $manager_id = $department->manager_id;
             $employee->update([
-                'emp_code'=> $request->emp_code,
+                'emp_code' => $request->emp_code,
                 'fullname' => $request->fullname,
                 'birthday' => $request->birthday,
                 'sex' => $request->sex,
@@ -98,10 +105,21 @@ class EmployeeController extends Controller
                 'pos_id' => $request->pos_id,
                 'role_id' => $request->role_id,
             ]);
-            return response()->json(['message'=>'update Employee successfully'],200);
+            $employmentContract = EmploymentContracts::where('user_id', $employee->user_id)->first();
 
+            if ($employmentContract) {
+                $employmentContract->update([
+                    'sign_date' => $request->sign_date,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'basic_salary' => $request->luongCoBan,
+                    'insurance_salary' => $request->luongCoBan,
+                    'allowance' => $request->phuCap,
+                ]);
+            }
+            return response()->json(['message' => 'update Employee successfully'], 200);
         } catch (\Throwable $e) {
-            return response()->json(['message'=>'Lỗi',$e->getMessage()],422);
+            return response()->json(['message' => 'Lỗi', $e->getMessage()], 422);
         }
     }
     public function actionEmployee($id)

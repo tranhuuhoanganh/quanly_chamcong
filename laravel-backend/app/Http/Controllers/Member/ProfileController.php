@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,20 +12,35 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function getProfile(Request $request)
+    public function getProfile()
     {
-        return response()->json($request->user());
+        $employee = Employee::where('user_id', Auth::id())->first();
+
+        if (!$employee) {
+            return response()->json([
+                'message' => 'Employee not found'
+            ], 404);
+        }
+
+        return response()->json($employee);
     }
 
-    public function updateProfile(Request $request){
-        
+    public function updateProfile(Request $request, $id){
+        $employee = Employee::find($id);
         try {
-            $user = Auth::User();
+            $user = User::where('id', $employee->user_id)->first();
             $user->update([
                 'email'=>$request->email,
-                'name' => $request->name,
+                'name' => $request->fullname,
             ]);
-            return response()->json(['user'=>$user, 'message'=>'update successfully'],200);
+            $employee->update([
+                'fullname'=>$request->fullname,
+                'birthday'=>$request->birthday,
+                'phone'=>$request->phone,
+                'email'=>$request->email,
+                'sex'=>$request->sex,
+            ]);            
+            return response()->json([ 'message'=>'update successfully'],200);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'User not created',

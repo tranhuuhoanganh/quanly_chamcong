@@ -331,7 +331,18 @@
 
                                         </div>
 
+                                        <div class="mb-3">
 
+                                            <label class="form-label fw-semibold">
+                                                Hạn hợp đồng
+                                            </label>
+
+                                            <input type="date" class="form-control rounded-4"
+                                                v-model="formData.sign_date">
+                                            <div class="invalid-feedback" v-if="errors.sign_date">{{ errors.sign_date[0] }}
+                                            </div>
+
+                                        </div>
 
                                     </div>
 
@@ -391,6 +402,7 @@ const formData = reactive({
     phuCap:'',
     start_date:'',
     end_date:'',
+    sign_date:'',
     sex: '',
     email: '',
     password: '',

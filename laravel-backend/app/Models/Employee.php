@@ -52,4 +52,8 @@ class Employee extends Model
     {
     return $this->hasMany(Employee::class,'manager_id','id');
     }
+    public function employmentContract(){
+        return $this->belongsTo(EmploymentContracts::class,'user_id','user_id');
+
+    }
 }
