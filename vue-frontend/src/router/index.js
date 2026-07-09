@@ -26,6 +26,7 @@
     import AnnualLeave from '../components/member/Leave/AnnualLeave/AnnualLeave.vue'
     import OtApproval from '../components/member/Orders/Ot-approval.vue'
     import OtLeave from '../components/member/Leave/OtLeave/OtLeave.vue'
+    import Deduction from '../components/member/salary/Deduction/Deduction.vue'
     const routes = [
         // Auth
         {
@@ -158,7 +159,14 @@
                     meta: {
                         title: 'Phép OT'
                     }
+                },{
+                    path: 'salary/deduction',
+                    component: Deduction,
+                    meta: {
+                        title: 'Khấu trừ lương'
+                    }
                 },
+                
             ]
         }
     ]

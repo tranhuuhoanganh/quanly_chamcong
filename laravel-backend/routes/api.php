@@ -6,9 +6,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetpasswordController;
 use App\Http\Controllers\Member\ConfirmExplainationController;
 use App\Http\Controllers\Member\DashboardController;
+use App\Http\Controllers\Member\DeductionController;
 use App\Http\Controllers\Member\DepartmentController;
 use App\Http\Controllers\Member\EmployeeController;
 use App\Http\Controllers\Member\ExpalainationController;
+use App\Http\Controllers\Member\GetEmployeeController;
 use App\Http\Controllers\Member\GetUserController;
 use App\Http\Controllers\Member\LeaveRequestController;
 use App\Http\Controllers\Member\OtController;
@@ -19,6 +21,7 @@ use App\Http\Controllers\Member\TimeEntryController;
 use App\Http\Controllers\Member\TypeController;
 use App\Http\Controllers\Member\UserController;
 use App\Http\Controllers\Member\WorkingDayController;
+use App\Models\Deduction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // Route::get('/user', function (Request $request) {
@@ -34,6 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('count_user',[DashboardController::class,'countUser']);
     Route::get('get-account-info',[UserController::class,'getAccountInfo']);
     Route::get('get-user',[GetUserController::class,'GetUser']);
+    Route::get('get-employee',[GetEmployeeController::class,'GetEmployee']);
     Route::get('logout',[AuthenticareController::class,'logout']);
     Route::prefix('profile')->controller(ProfileController::class)->group(function(){
         Route::get('/','getProfile');
@@ -117,6 +121,12 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/approve-ot', 'approveOt');
         Route::get('/get-ot-user','getotUser');
         Route::put('/update/{id}','editOt');
+    });
+    Route::prefix('deduction')->controller(DeductionController::class)->group(function(){
+        Route::get('/get-deduction','getDeduction');
+        Route::get('/get-type','getType');
+        Route::post('/create-deduction','createDeduction');
+
     });
 });
 
