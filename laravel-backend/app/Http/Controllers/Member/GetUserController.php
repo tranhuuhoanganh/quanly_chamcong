@@ -8,6 +8,7 @@ use App\Models\User;
 class GetUserController extends Controller
 {
     public function GetUser(){
-        return response()->json(User::all());
+        $user = User::all();
+        return response()->json($user);
     }
 }
