@@ -37,4 +37,19 @@ class DeductionController extends Controller
             return response()->json(['message'=>'Deduction not created', 'error'=> $e->getMessage()],422);
         }
     }
+    public function editDeduction(Request $request,$id){
+        $deductions = Deduction::find($id);
+         try {
+            $deductions->update([
+                'user_id' => $request->user_id,
+                'deduction_type_id' => $request->deduction_type_id,
+                'amount' => $request->amount,
+                'deduction_date' => $request->deduction_date,
+                'reason' => $request->reason,
+            ]);
+            return response()->json(['message'=>'edit successfully.'],200);
+        } catch (\Throwable $e) {
+            return response()->json(['message'=>'Deduction not edit', 'error'=> $e->getMessage()],422);
+        }
+    }
 }

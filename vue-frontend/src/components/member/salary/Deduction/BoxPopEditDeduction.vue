@@ -17,7 +17,7 @@
                         <option value="">-- Chọn nhân viên --</option>
 
                         <option v-for="user in getUsers" :key="user.id" :value="user.id">
-                            {{ user.fullname }}-{{ user.email }}
+                            {{ user.name }}-{{ user.email }}
                         </option>
 
                     </select>
@@ -62,11 +62,11 @@
 <script setup>
 import { reactive, ref, onMounted } from "vue";
 import api from "../../../../axios";
-
+import { useToast } from 'vue-toastification'
 const getUsers = ref([]);
 const getTypes = ref([]);
 const errors = ref({})
-
+const toast = useToast()
 const Props = defineProps({
     deduction: Object,
 });
@@ -98,7 +98,6 @@ onMounted(async () => {
     try {
         const res = await api.get(`get-user`);
         getUsers.value = res.data;
-        console.log(res);
     } catch (error) {
         console.log(error);
     }
@@ -112,25 +111,17 @@ onMounted(async () => {
 });
 
 const saveDeduction = async () => {
-
     try {
-
         const res = await api.put(
             `deduction/update/${Props.deduction.deduction_id}`,
             formData
         );
-
         emit("update");
         emit("close");
-
+        toast.success(res.data.message)
     } catch (error) {
-
-        if (error.response.status == 422) {
-            errors.value = error.response.data.errors
-        }
-
-        console.log(error);
-
+        toast.error(error.response.data.message)
+        errors.value = error.response.data.errors
     }
 
 };

@@ -280,7 +280,8 @@
                                                 Lương cơ bản
                                             </label>
 
-                                            <input type="number" class="form-control rounded-4" v-model="formData.luongCoBan"
+                                            <input type="number" class="form-control rounded-4"
+                                                v-model="formData.luongCoBan"
                                                 :class="{ 'is-invalid': errors.luongCoBan }">
 
                                             <div class="invalid-feedback" v-if="errors.luongCoBan">
@@ -293,7 +294,7 @@
                                         <div class="mb-3">
 
                                             <label class="form-label fw-semibold">
-                                                Phụ cấp
+                                                Phụ cấp chức vụ
                                             </label>
 
                                             <input type="number" class="form-control rounded-4"
@@ -304,7 +305,20 @@
                                             </div>
 
                                         </div>
+                                        <div class="mb-3">
 
+                                            <label class="form-label fw-semibold">
+                                                Phụ cấp sinh hoạt
+                                            </label>
+
+                                            <input type="number" class="form-control rounded-4"
+                                                v-model="formData.phuCap" :class="{ 'is-invalid': errors.phuCap }">
+
+                                            <div class="invalid-feedback" v-if="errors.phuCap">
+                                                {{ errors.phuCap[0] }}
+                                            </div>
+
+                                        </div>
                                         <div class="mb-3">
 
                                             <label class="form-label fw-semibold">
@@ -313,7 +327,8 @@
 
                                             <input type="date" class="form-control rounded-4"
                                                 v-model="formData.start_date">
-                                            <div class="invalid-feedback" v-if="errors.start_date">{{ errors.start_date[0] }}
+                                            <div class="invalid-feedback" v-if="errors.start_date">{{
+                                                errors.start_date[0] }}
                                             </div>
 
                                         </div>
@@ -326,7 +341,8 @@
 
                                             <input type="date" class="form-control rounded-4"
                                                 v-model="formData.end_date">
-                                            <div class="invalid-feedback" v-if="errors.end_date">{{ errors.end_date[0] }}
+                                            <div class="invalid-feedback" v-if="errors.end_date">{{ errors.end_date[0]
+                                                }}
                                             </div>
 
                                         </div>
@@ -339,7 +355,8 @@
 
                                             <input type="date" class="form-control rounded-4"
                                                 v-model="formData.sign_date">
-                                            <div class="invalid-feedback" v-if="errors.sign_date">{{ errors.sign_date[0] }}
+                                            <div class="invalid-feedback" v-if="errors.sign_date">{{ errors.sign_date[0]
+                                                }}
                                             </div>
 
                                         </div>
@@ -398,11 +415,11 @@ const formData = reactive({
     emp_code: '',
     fullname: '',
     birthday: '',
-    luongCoBan:'',
-    phuCap:'',
-    start_date:'',
-    end_date:'',
-    sign_date:'',
+    luongCoBan: '',
+    phuCap: '',
+    start_date: '',
+    end_date: '',
+    sign_date: '',
     sex: '',
     email: '',
     password: '',
@@ -446,10 +463,11 @@ const saveEmployee = async () => {
 }
 </script>
 <style scoped>
-.custom-modal-width{
-        max-width: 1200px !important; 
+.custom-modal-width {
+    max-width: 1200px !important;
 
 }
+
 .custom-modal {
     background: rgba(15, 23, 42, 0.55);
     backdrop-filter: blur(4px);

@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-deduction','getDeduction');
         Route::get('/get-type','getType');
         Route::post('/create-deduction','createDeduction');
+        Route::put('/update/{id}','editDeduction');
 
     });
 });
