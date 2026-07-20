@@ -35,37 +35,37 @@
 
                         <tbody>
 
-                            <tr v-for="(deduction, index) in Deductions" :key="deduction.deduction_id"
-                                :class="{ 'inactive-row': deduction.status == 0 }">
+                            <tr v-for="(bonus, index) in Bonuses" :key="bonus.bonus_id">
 
                                 <td class="ps-4">
                                     {{ index + 1 }}
                                 </td>
 
                                 <td>
-                                    {{ deduction.user.name }}
+                                    {{ bonus.user.name }}
                                 </td>
 
                                 <td>
-                                    {{ deduction.deduction_type.name }}
+                                    {{ bonus.bonus_type.name }}
                                 </td>
 
                                 <td>
-                                    {{ Number(deduction.amount).toLocaleString('en-US') }}                                
+                                    {{ Number(bonus.amount).toLocaleString('en-US') }}                                
                                 </td>
 
                                 <td>
-                                    {{ new Date(deduction.deduction_date).toLocaleDateString('vi-VN') }}
+                                    {{ bonus.payroll_month.split('-').reverse().join('/') }}                                
                                 </td>
+
                                 <td class="text-center">
 
                                     <button class="btn btn-sm btn-light border me-2" style="border-radius:10px;"
-                                        @click="openEditModal(deduction)">
+                                        @click="openEditModal(bonus)">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </button>
 
                                     <button class="btn btn-sm btn-light border text-danger" style="border-radius:10px;"
-                                        @click="openDeleteModal(deduction)">
+                                        @click="openDeleteModal(bonus)">
                                         <i class="fa-regular fa-trash-can"></i>
                                     </button>
                                 </td>
@@ -79,42 +79,41 @@
                 </div>
 
             </div>
-           <BoxPopCreateDeduction v-if="showCreateDeduction" @close="showCreateDeduction = false" @update="getDeduction" />
-           <BoxPopEditDeduction v-if="showEditDeduction" :deduction="selectedEditDeduction" @close="showEditDeduction = false" @update="getDeduction" />
-           <BoxPopDeleteDeduction v-if="showDeleteDeduction" :deduction="selectedDeleteDeduction" @close="showDeleteDeduction = false" @update="getDeduction" />
-
+           <BoxPopCreateBonus v-if="showCreateBonus" @close="showCreateBonus = false" @update="getBonus" />
+           <BoxPopEditBonus v-if="showEditBonus" :bonus="selectedEditBonus" @close="showEditBonus = false" @update="getBonus" />
+           <BoxPopDeleteBonus v-if="showDeleteBonus" :bonus="selectedDeleteBonus" @close="showDeleteBonus = false" @update="getBonus" />
         </div>
     </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import api from '../../../../axios';
-import BoxPopCreateDeduction from './BoxPopCreateDeduction.vue';
-import BoxPopEditDeduction from './BoxPopEditDeduction.vue';
-import BoxPopDeleteDeduction from './BoxPopDeleteDeduction.vue';
-const Deductions = ref([])
-const showEditDeduction = ref(false)
-const showCreateDeduction = ref(false)
-const showDeleteDeduction = ref(false)
-const getDeduction = async () => {
-        const res = await api.get(`deduction/get-deduction`)
-        Deductions.value = res.data
+import api from '../../../../axios.js';
+import BoxPopCreateBonus from './BoxPopCreateBonus.vue';
+import BoxPopEditBonus from './BoxPopEditBonus.vue';
+import BoxPopDeleteBonus from './BoxPopDeleteBonus.vue';
+const Bonuses = ref([])
+const showEditBonus = ref(false)
+const showCreateBonus = ref(false)
+const showDeleteBonus = ref(false)
+const getBonus = async () => {
+        const res = await api.get(`bonus/get-bonus`)
+        Bonuses.value = res.data
 }
 onMounted(() => {
-    getDeduction()
+    getBonus()
 })
 const openCreateModal = () => {
-    showCreateDeduction.value = true
+    showCreateBonus.value = true
 }
-const selectedEditDeduction = ref(null)
-const openEditModal = (deduction) => {
-    selectedEditDeduction.value = deduction
-    showEditDeduction.value = true
+const selectedEditBonus = ref(null)
+const openEditModal = (bonus) => {
+    selectedEditBonus.value = bonus
+    showEditBonus.value = true
 }
-const selectedDeleteDeduction = ref(null)
-const openDeleteModal = (deduction) => {
-    selectedDeleteDeduction.value = deduction.deduction_id
-    showDeleteDeduction.value = true
+const selectedDeleteBonus = ref(null)
+const openDeleteModal = (bonus) => {
+    selectedDeleteBonus.value = bonus.bonus_id
+    showDeleteBonus.value = true
 }
 </script>
 

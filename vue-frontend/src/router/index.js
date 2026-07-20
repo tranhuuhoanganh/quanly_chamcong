@@ -27,6 +27,7 @@
     import OtApproval from '../components/member/Orders/Ot-approval.vue'
     import OtLeave from '../components/member/Leave/OtLeave/OtLeave.vue'
     import Deduction from '../components/member/salary/Deduction/Deduction.vue'
+    import Bonus from '../components/member/salary/Bonus/Bonus.vue'
     const routes = [
         // Auth
         {
@@ -164,6 +165,12 @@
                     component: Deduction,
                     meta: {
                         title: 'Khấu trừ lương'
+                    }
+                },{
+                    path: 'salary/bonus',
+                    component: Bonus,
+                    meta: {
+                        title: 'Thưởng'
                     }
                 },
                 

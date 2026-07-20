@@ -293,18 +293,31 @@
                                         <div class="mb-3">
 
                                             <label class="form-label fw-semibold">
-                                                Phụ cấp
+                                                Phụ cấp chức vụ
                                             </label>
 
                                             <input type="number" class="form-control rounded-4"
-                                                v-model="formData.phuCap" :class="{ 'is-invalid': errors.phuCap }">
+                                                v-model="formData.phuCapChucVu" :class="{ 'is-invalid': errors.phuCapChucVu }">
 
-                                            <div class="invalid-feedback" v-if="errors.phuCap">
-                                                {{ errors.phuCap[0] }}
+                                            <div class="invalid-feedback" v-if="errors.phuCapChucVu">
+                                                {{ errors.phuCapChucVu[0] }}
                                             </div>
 
                                         </div>
+                                        <div class="mb-3">
 
+                                            <label class="form-label fw-semibold">
+                                                Phụ cấp  sinh hoạt
+                                            </label>
+
+                                            <input type="number" class="form-control rounded-4"
+                                                v-model="formData.phuCapSinhHoat" :class="{ 'is-invalid': errors.phuCapSinhHoat }">
+
+                                            <div class="invalid-feedback" v-if="errors.phuCapSinhHoat">
+                                                {{ errors.phuCapSinhHoat[0] }}
+                                            </div>
+
+                                        </div>
                                         <div class="mb-3">
 
                                             <label class="form-label fw-semibold">
@@ -334,7 +347,7 @@
                                         <div class="mb-3">
 
                                             <label class="form-label fw-semibold">
-                                                Hạn hợp đồng
+                                                Ngày ký hợp đồng
                                             </label>
 
                                             <input type="date" class="form-control rounded-4"
@@ -403,7 +416,8 @@ const formData = reactive({
     birthday: '',
     sex: '',
     luongCoBan:'',
-    phuCap:'',
+    phuCapChucVu:'',
+    phuCapSinhHoat:'',
     start_date:'',
     end_date:'',
     sign_date:'',
@@ -431,7 +445,8 @@ onMounted(async () => {
         phone: props.employee.phone,
         hire_date: props.employee.hire_date,
         luongCoBan:Number(props.employee.employment_contract.basic_salary),
-        phuCap:Number(props.employee.employment_contract.allowance),
+        phuCapChucVu:Number(props.employee.employment_contract.position_allowance),
+        phuCapSinhHoat:Number(props.employee.employment_contract.living_allowance),
         sign_date: props.employee.employment_contract.sign_date?.split('T')[0],
         start_date: props.employee.employment_contract.start_date?.split('T')[0],
         end_date: props.employee.employment_contract.end_date?.split('T')[0],

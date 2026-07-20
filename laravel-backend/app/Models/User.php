@@ -11,12 +11,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password','depart_id'])]
+#[Fillable(['name', 'email', 'password', 'depart_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory,Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * Get the attributes that should be cast.
@@ -33,10 +33,14 @@ class User extends Authenticatable
 
     public function employee()
     {
-    return $this->hasOne(Employee::class,'user_id','id');
+        return $this->hasOne(Employee::class, 'user_id', 'id');
     }
     public function annualLeaves()
-{
-    return $this->hasMany(AnnualLeave::class);
-}
+    {
+        return $this->hasMany(AnnualLeave::class);
+    }
+    public function bonuses()
+    {
+        return $this->hasMany(Bonus::class, 'user_id', 'id');
+    }
 }

@@ -59,8 +59,9 @@ class EmployeeController extends Controller
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'basic_salary' => $request->luongCoBan,
-                'insurance_salary' => $request->luongCoBan,
-                'allowance' => $request->phuCap
+                'position_allowance' => $request->phuCapChucVu,
+                'living_allowance' => $request->phuCapSinhHoat,
+
             ]);
             return response()->json(['message' => 'Create Employee successfully'], 200);
         } catch (\Throwable $e) {
@@ -113,8 +114,8 @@ class EmployeeController extends Controller
                     'start_date' => $request->start_date,
                     'end_date' => $request->end_date,
                     'basic_salary' => $request->luongCoBan,
-                    'insurance_salary' => $request->luongCoBan,
-                    'allowance' => $request->phuCap,
+                    'position_allowance' => $request->phuCapChucVu,
+                    'living_allowance' => $request->phuCapSinhHoat,
                 ]);
             }
             return response()->json(['message' => 'update Employee successfully'], 200);
@@ -125,12 +126,17 @@ class EmployeeController extends Controller
     public function actionEmployee($id)
     {
         $employee = Employee::find($id);
-
-        $employee->status =
-            $employee->status == 1 ? 0 : 1;
-
+        $employee->status = $employee->status == 1 ? 0 : 1;
         $employee->save();
 
+        $employment_contract = EmploymentContracts::where('user_id', $employee->user_id)
+            ->where('is_current', 1)
+            ->first();
+
+        if ($employment_contract) {
+            $employment_contract->status = $employment_contract->status == 1 ? 0 : 1;
+            $employment_contract->save();
+        }
         return response()->json([
             'message' => 'Success',
         ]);
@@ -141,8 +147,15 @@ class EmployeeController extends Controller
         if (! $employee) {
             return response()->json(['message' => 'employee not found'], 404);
         }
-        $employee->delete();
+        $employmentContract = EmploymentContracts::where('user_id', $employee->user_id)
+            ->where('is_current', 1)
+            ->first();
 
+        if ($employmentContract) {
+            $employmentContract->delete();
+        }
+
+        $employee->delete();
         return response()->json(['message' => 'Delete employee '], 200);
     }
 }

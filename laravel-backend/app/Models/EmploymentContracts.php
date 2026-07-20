@@ -18,8 +18,8 @@ class EmploymentContracts extends Model
         'start_date',
         'end_date',
         'basic_salary',
-        'insurance_salary',
-        'allowance',
+        'living_allowance',
+        'position_allowance',
         'taxable_allowance',
         'participate_insurance',
         'is_current',
@@ -32,8 +32,8 @@ class EmploymentContracts extends Model
         'end_date' => 'date',
 
         'basic_salary' => 'decimal:2',
-        'insurance_salary' => 'decimal:2',
-        'allowance' => 'decimal:2',
+        'position_allowance' => 'decimal:2',
+        'living_allowance' => 'decimal:2',
         'taxable_allowance' => 'decimal:2',
 
         'participate_insurance' => 'boolean',

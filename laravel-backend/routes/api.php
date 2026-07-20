@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticareController;
 use App\Http\Controllers\Auth\ForgotpasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetpasswordController;
+use App\Http\Controllers\Member\BonusController;
 use App\Http\Controllers\Member\ConfirmExplainationController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\DeductionController;
@@ -127,6 +128,14 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/get-type','getType');
         Route::post('/create-deduction','createDeduction');
         Route::put('/update/{id}','editDeduction');
+        Route::delete('/delete/{id}','deleteDeduction');
+    });
+    Route::prefix('bonus')->controller(BonusController::class)->group(function(){
+        Route::get('/get-bonus','getBonus');
+        Route::get('/get-type','getType');
+        Route::post('/create-bonus','createBonus');
+        Route::put('/update/{id}','editBonus');
+        Route::delete('/delete/{id}','deleteBonus');
 
     });
 });

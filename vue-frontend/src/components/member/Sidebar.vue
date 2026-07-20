@@ -245,7 +245,7 @@ const menus = [
   children: [
     { to: "/salary/payroll", label: "Bảng lương" },
     { to: "/salary/calculate", label: "Tính lương thưởng" },
-    { to: "/salary/reward", label: "Thưởng" },
+    { to: "/salary/bonus", label: "Thưởng" },
     { to: "/salary/deduction", label: "Khấu trừ" },
   ],
 },

@@ -298,10 +298,10 @@
                                             </label>
 
                                             <input type="number" class="form-control rounded-4"
-                                                v-model="formData.phuCap" :class="{ 'is-invalid': errors.phuCap }">
+                                                v-model="formData.phuCapChucVu" :class="{ 'is-invalid': errors.phuCapChucVu }">
 
-                                            <div class="invalid-feedback" v-if="errors.phuCap">
-                                                {{ errors.phuCap[0] }}
+                                            <div class="invalid-feedback" v-if="errors.phuCapChucVu">
+                                                {{ errors.phuCapChucVu[0] }}
                                             </div>
 
                                         </div>
@@ -312,10 +312,10 @@
                                             </label>
 
                                             <input type="number" class="form-control rounded-4"
-                                                v-model="formData.phuCap" :class="{ 'is-invalid': errors.phuCap }">
+                                                v-model="formData.phuCapSinhHoat" :class="{ 'is-invalid': errors.phuCapSinhHoat }">
 
-                                            <div class="invalid-feedback" v-if="errors.phuCap">
-                                                {{ errors.phuCap[0] }}
+                                            <div class="invalid-feedback" v-if="errors.phuCapSinhHoat">
+                                                {{ errors.phuCapSinhHoat[0] }}
                                             </div>
 
                                         </div>
@@ -350,7 +350,7 @@
                                         <div class="mb-3">
 
                                             <label class="form-label fw-semibold">
-                                                Hạn hợp đồng
+                                                Ngày ký hợp đồng
                                             </label>
 
                                             <input type="date" class="form-control rounded-4"
@@ -416,7 +416,8 @@ const formData = reactive({
     fullname: '',
     birthday: '',
     luongCoBan: '',
-    phuCap: '',
+    phuCapChucVu: '',
+    phuCapSinhHoat: '',
     start_date: '',
     end_date: '',
     sign_date: '',

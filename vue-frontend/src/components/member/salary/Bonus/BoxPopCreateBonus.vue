@@ -5,7 +5,7 @@
         <div class="modal-box">
 
             <div class="d-flex justify-content-between mb-3">
-                <h5>Create deduction</h5>
+                <h5>Create bonus</h5>
 
                 <button class="btn-close" @click="emit('close')"></button>
             </div>
@@ -21,21 +21,21 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label>Loại khấu trừ</label>
-                    <select class="form-control" v-model="formData.deduction_type_id">
-                        <option value="">-- Chọn loại khấu trừ --</option>
-                        <option v-for="type in getTypes" :key="type.id" :value="type.id">
+                    <label>Loại thưởng</label>
+                    <select class="form-control" v-model="formData.bonus_type_id">
+                        <option value="">-- Chọn loại thưởng --</option>
+                        <option v-for="type in getTypes" :key="type.bonus_type_id" :value="type.bonus_type_id">
                             {{ type.name }}
                         </option>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label>Tiền khấu trừ</label>
+                    <label>Tiền Thưởng</label>
                     <input type="number" class="form-control" v-model="formData.amount">
                 </div>
                 <div class="mb-3">
                     <label>Ngày áp dụng</label>
-                    <input type="date" class="form-control" v-model="formData.deduction_date">
+                    <input type="month" class="form-control" v-model="formData.payroll_month">
                 </div>
                 <div class="mb-3">
                     <label>Ghi chú</label>
@@ -65,8 +65,8 @@ const formData = reactive({
     amount: '',
     reason: '',
     user_id: '',
-    deduction_type_id:'',
-    deduction_date: ''
+    bonus_type_id:'',
+    bonus_date: ''
 })
 const emit = defineEmits([
     'close',
@@ -77,13 +77,14 @@ const getUser = async() => {
     getUsers.value = res.data   
 }
 const getType = async() => {
-    const res = await api.get(`deduction/get-type`)
-    getTypes.value = res.data  
+    const res = await api.get(`bonus/get-type`)
+    getTypes.value = res.data   
+    console.log(res);
 }
 
 const saveDeduction = async () =>{
     try {
-        await api.post(`deduction/create-deduction`,formData)
+        await api.post(`bonus/create-bonus`,formData)
         emit('close')
         emit('update')
     } catch (error) {

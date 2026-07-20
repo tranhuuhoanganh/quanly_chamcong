@@ -41,7 +41,6 @@ class DeductionController extends Controller
         $deductions = Deduction::find($id);
          try {
             $deductions->update([
-                'user_id' => $request->user_id,
                 'deduction_type_id' => $request->deduction_type_id,
                 'amount' => $request->amount,
                 'deduction_date' => $request->deduction_date,
@@ -51,5 +50,14 @@ class DeductionController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['message'=>'Deduction not edit', 'error'=> $e->getMessage()],422);
         }
+    }
+    public function deleteDeduction($id)
+    {
+        $Deduction = Deduction::find($id);
+        if (!$Deduction) {
+            return response()->json(['message' => 'Bonus not found'], 404);
+        }
+        $Deduction->delete();
+        return response()->json(['message' => 'Delete Department '], 200);
     }
 }
