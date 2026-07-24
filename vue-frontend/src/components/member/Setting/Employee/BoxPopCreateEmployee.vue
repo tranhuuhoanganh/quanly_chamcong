@@ -25,14 +25,47 @@
                 <!-- Body -->
                 <div class="modal-body px-4 pt-2">
 
-                    <form @submit.prevent="saveEmployee" novalidate>
+                    <!-- Step Progress -->
+                    <div class="wizard-steps mb-4">
 
-                        <div class="row g-3">
+                        <div class="wizard-step" :class="{ active: currentStep === 1, done: currentStep > 1 }">
+                            <div class="wizard-circle">
+                                <i class="fa-solid fa-check" v-if="currentStep > 1"></i>
+                                <span v-else>1</span>
+                            </div>
+                            <div class="wizard-title">Thông tin cá nhân</div>
+                        </div>
 
-                            <!-- LEFT -->
-                            <div class="col-lg-4">
+                        <div class="wizard-line" :class="{ filled: currentStep > 1 }"></div>
 
-                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary h-100">
+                        <div class="wizard-step" :class="{ active: currentStep === 2, done: currentStep > 2 }">
+                            <div class="wizard-circle">
+                                <i class="fa-solid fa-check" v-if="currentStep > 2"></i>
+                                <span v-else>2</span>
+                            </div>
+                            <div class="wizard-title">Thông tin công việc</div>
+                        </div>
+
+                        <div class="wizard-line" :class="{ filled: currentStep > 2 }"></div>
+
+                        <div class="wizard-step" :class="{ active: currentStep === 3, done: currentStep > 3 }">
+                            <div class="wizard-circle">
+                                <i class="fa-solid fa-check" v-if="currentStep > 3"></i>
+                                <span v-else>3</span>
+                            </div>
+                            <div class="wizard-title">Hợp đồng lao động</div>
+                        </div>
+
+                    </div>
+
+                    <form @submit.prevent novalidate>
+
+                        <transition name="step-fade" mode="out-in">
+
+                            <!-- ================= STEP 1 ================= -->
+                            <div v-if="currentStep === 1" key="step1">
+
+                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary">
 
                                     <div class="card-body">
 
@@ -41,91 +74,99 @@
                                             Thông tin cá nhân
                                         </h6>
 
-                                        <!-- Employee Code -->
-                                        <div class="mb-3">
+                                        <div class="row g-3">
 
-                                            <label class="form-label fw-semibold">
-                                                Mã nhân viên
-                                            </label>
+                                            <!-- Employee Code -->
+                                            <div class="col-md-6">
 
-                                            <input type="text" class="form-control rounded-4"
-                                                v-model="formData.emp_code" :class="{ 'is-invalid': errors.emp_code }">
+                                                <label class="form-label fw-semibold">
+                                                    Mã nhân viên
+                                                </label>
 
-                                            <div class="invalid-feedback" v-if="errors.emp_code">
-                                                {{ errors.emp_code[0] }}
-                                            </div>
-                                        </div>
+                                                <input type="text" class="form-control rounded-4"
+                                                    v-model="formData.emp_code"
+                                                    :class="{ 'is-invalid': errors.emp_code }">
 
-                                        <!-- Fullname -->
-                                        <div class="mb-3">
-
-                                            <label class="form-label fw-semibold">
-                                                Họ và tên
-                                            </label>
-
-                                            <input type="text" class="form-control rounded-4"
-                                                v-model="formData.fullname" :class="{ 'is-invalid': errors.fullname }">
-
-                                            <div class="invalid-feedback" v-if="errors.fullname">
-                                                {{ errors.fullname[0] }}
+                                                <div class="invalid-feedback" v-if="errors.emp_code">
+                                                    {{ errors.emp_code[0] }}
+                                                </div>
                                             </div>
 
-                                        </div>
+                                            <!-- Fullname -->
+                                            <div class="col-md-6">
 
-                                        <!-- Birthday -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Họ và tên
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Ngày sinh
-                                            </label>
+                                                <input type="text" class="form-control rounded-4"
+                                                    v-model="formData.fullname"
+                                                    :class="{ 'is-invalid': errors.fullname }">
 
-                                            <input type="date" class="form-control rounded-4"
-                                                v-model="formData.birthday" :class="{ 'is-invalid': errors.birthday }">
+                                                <div class="invalid-feedback" v-if="errors.fullname">
+                                                    {{ errors.fullname[0] }}
+                                                </div>
 
-                                            <div class="invalid-feedback" v-if="errors.birthday">
-                                                {{ errors.birthday[0] }}
                                             </div>
 
-                                        </div>
+                                            <!-- Birthday -->
+                                            <div class="col-md-6">
 
-                                        <!-- Gender -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Ngày sinh
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Giới tính
-                                            </label>
+                                                <input type="date" class="form-control rounded-4"
+                                                    v-model="formData.birthday"
+                                                    :class="{ 'is-invalid': errors.birthday }">
 
-                                            <select class="form-select rounded-4" v-model="formData.sex"
-                                                :class="{ 'is-invalid': errors.sex }">
-                                                <option value="">
-                                                    -- Chọn giới tính --
-                                                </option>
+                                                <div class="invalid-feedback" v-if="errors.birthday">
+                                                    {{ errors.birthday[0] }}
+                                                </div>
 
-                                                <option value="nam">
-                                                    Nam
-                                                </option>
-
-                                                <option value="nữ">
-                                                    Nữ
-                                                </option>
-                                            </select>
-                                            <div class="invalid-feedback" v-if="errors.sex">
-                                                {{ errors.sex[0] }}
                                             </div>
-                                        </div>
 
-                                        <!-- Phone -->
-                                        <div class="mb-0">
+                                            <!-- Gender -->
+                                            <div class="col-md-6">
 
-                                            <label class="form-label fw-semibold">
-                                                Số điện thoại
-                                            </label>
+                                                <label class="form-label fw-semibold">
+                                                    Giới tính
+                                                </label>
 
-                                            <input type="text" class="form-control rounded-4" v-model="formData.phone"
-                                                :class="{ 'is-invalid': errors.phone }">
+                                                <select class="form-select rounded-4" v-model="formData.sex"
+                                                    :class="{ 'is-invalid': errors.sex }">
+                                                    <option value="">
+                                                        -- Chọn giới tính --
+                                                    </option>
 
-                                            <div class="invalid-feedback" v-if="errors.phone">
-                                                {{ errors.phone[0] }}
+                                                    <option value="nam">
+                                                        Nam
+                                                    </option>
+
+                                                    <option value="nữ">
+                                                        Nữ
+                                                    </option>
+                                                </select>
+                                                <div class="invalid-feedback" v-if="errors.sex">
+                                                    {{ errors.sex[0] }}
+                                                </div>
+                                            </div>
+
+                                            <!-- Phone -->
+                                            <div class="col-md-6">
+
+                                                <label class="form-label fw-semibold">
+                                                    Số điện thoại
+                                                </label>
+
+                                                <input type="text" class="form-control rounded-4"
+                                                    v-model="formData.phone"
+                                                    :class="{ 'is-invalid': errors.phone }">
+
+                                                <div class="invalid-feedback" v-if="errors.phone">
+                                                    {{ errors.phone[0] }}
+                                                </div>
+
                                             </div>
 
                                         </div>
@@ -136,10 +177,10 @@
 
                             </div>
 
-                            <!-- RIGHT -->
-                            <div class="col-lg-4">
+                            <!-- ================= STEP 2 ================= -->
+                            <div v-else-if="currentStep === 2" key="step2">
 
-                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary h-100">
+                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary">
 
                                     <div class="card-body">
 
@@ -148,113 +189,122 @@
                                             Thông tin công việc
                                         </h6>
 
-                                        <!-- Email -->
-                                        <div class="mb-3">
+                                        <div class="row g-3">
 
-                                            <label class="form-label fw-semibold">
-                                                Email
-                                            </label>
+                                            <!-- Email -->
+                                            <div class="col-md-6">
 
-                                            <input type="email" class="form-control rounded-4" v-model="formData.email"
-                                                :class="{ 'is-invalid': errors.email }">
+                                                <label class="form-label fw-semibold">
+                                                    Email
+                                                </label>
 
-                                            <div class="invalid-feedback" v-if="errors.email">
-                                                {{ errors.email[0] }}
+                                                <input type="email" class="form-control rounded-4"
+                                                    v-model="formData.email"
+                                                    :class="{ 'is-invalid': errors.email }">
+
+                                                <div class="invalid-feedback" v-if="errors.email">
+                                                    {{ errors.email[0] }}
+                                                </div>
+
                                             </div>
 
-                                        </div>
+                                            <!-- Password -->
+                                            <div class="col-md-6">
 
-                                        <!-- Password -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Password
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Password
-                                            </label>
+                                                <input type="password" class="form-control rounded-4"
+                                                    v-model="formData.password"
+                                                    :class="{ 'is-invalid': errors.password }">
 
-                                            <input type="password" class="form-control rounded-4"
-                                                v-model="formData.password" :class="{ 'is-invalid': errors.password }">
+                                                <div class="invalid-feedback" v-if="errors.password">
+                                                    {{ errors.password[0] }}
+                                                </div>
 
-                                            <div class="invalid-feedback" v-if="errors.password">
-                                                {{ errors.password[0] }}
                                             </div>
 
-                                        </div>
+                                            <!-- Hire Date -->
+                                            <div class="col-md-6">
 
-                                        <!-- Hire Date -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Ngày vào làm
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Ngày vào làm
-                                            </label>
+                                                <input type="date" class="form-control rounded-4"
+                                                    v-model="formData.hire_date"
+                                                    :class="{ 'is-invalid': errors.hire_date }">
+                                                <div class="invalid-feedback" v-if="errors.hire_date">
+                                                    {{ errors.hire_date[0] }}
+                                                </div>
 
-                                            <input type="date" class="form-control rounded-4"
-                                                v-model="formData.hire_date">
-                                            <div class="invalid-feedback" v-if="errors.email">{{ errors.email[0] }}
                                             </div>
 
-                                        </div>
+                                            <!-- Department -->
+                                            <div class="col-md-6">
 
-                                        <!-- Department -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Phòng ban
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Phòng ban
-                                            </label>
-
-                                            <select class="form-select rounded-4" v-model="formData.depart_id"
-                                                :class="{ 'is-invalid': errors.depart_id }">
-                                                <option value="">
-                                                    -- Chọn phòng ban --
-                                                </option>
-                                                <option v-for="depart in departments" :key="depart.depart_id"
-                                                    :value="depart.depart_id">{{ depart.depart_name }}</option>
-                                            </select>
-                                            <div class="invalid-feedback" v-if="errors.depart_id">
-                                                {{ errors.depart_id[0] }}
+                                                <select class="form-select rounded-4" v-model="formData.depart_id"
+                                                    :class="{ 'is-invalid': errors.depart_id }">
+                                                    <option value="">
+                                                        -- Chọn phòng ban --
+                                                    </option>
+                                                    <option v-for="depart in departments" :key="depart.depart_id"
+                                                        :value="depart.depart_id">{{ depart.depart_name }}</option>
+                                                </select>
+                                                <div class="invalid-feedback" v-if="errors.depart_id">
+                                                    {{ errors.depart_id[0] }}
+                                                </div>
                                             </div>
-                                        </div>
 
+                                            <!-- Position -->
+                                            <div class="col-md-6">
 
-                                        <!-- Position -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Chức vụ
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Chức vụ
-                                            </label>
+                                                <select class="form-select rounded-4" v-model="formData.pos_id"
+                                                    :class="{ 'is-invalid': errors.pos_id }">
+                                                    <option value="">
+                                                        -- Chọn chức vụ --
+                                                    </option>
+                                                    <option v-for="pos in positions" :key="pos.pos_id"
+                                                        :value="pos.pos_id">
+                                                        {{ pos.pos_name }}</option>
 
-                                            <select class="form-select rounded-4" v-model="formData.pos_id"
-                                                :class="{ 'is-invalid': errors.pos_id }">
-                                                <option value="">
-                                                    -- Chọn chức vụ --
-                                                </option>
-                                                <option v-for="pos in positions" :key="pos.pos_id" :value="pos.pos_id">
-                                                    {{ pos.pos_name }}</option>
-
-                                            </select>
-                                            <div class="invalid-feedback" v-if="errors.pos_id">
-                                                {{ errors.pos_id[0] }}
+                                                </select>
+                                                <div class="invalid-feedback" v-if="errors.pos_id">
+                                                    {{ errors.pos_id[0] }}
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Role -->
-                                        <div class="mb-0">
+                                            <!-- Role -->
+                                            <div class="col-md-6">
 
-                                            <label class="form-label fw-semibold">
-                                                Vai trò
-                                            </label>
+                                                <label class="form-label fw-semibold">
+                                                    Vai trò
+                                                </label>
 
-                                            <select class="form-select rounded-4" v-model="formData.role_id"
-                                                :class="{ 'is-invalid': errors.role_id }">
-                                                <option value="">
-                                                    -- Chọn vai trò --
-                                                </option>
-                                                <option v-for="role in roles" :key="role.role_id" :value="role.role_id">
-                                                    {{ role.role_name }}</option>
+                                                <select class="form-select rounded-4" v-model="formData.role_id"
+                                                    :class="{ 'is-invalid': errors.role_id }">
+                                                    <option value="">
+                                                        -- Chọn vai trò --
+                                                    </option>
+                                                    <option v-for="role in roles" :key="role.role_id"
+                                                        :value="role.role_id">
+                                                        {{ role.role_name }}</option>
 
-                                            </select>
-                                            <div class="invalid-feedback" v-if="errors.role_id">
-                                                {{ errors.role_id[0] }}
+                                                </select>
+                                                <div class="invalid-feedback" v-if="errors.role_id">
+                                                    {{ errors.role_id[0] }}
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </div>
@@ -262,101 +312,119 @@
                                 </div>
 
                             </div>
-                            <div class="col-lg-4">
 
-                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary h-100">
+                            <!-- ================= STEP 3 ================= -->
+                            <div v-else-if="currentStep === 3" key="step3">
+
+                                <div class="card border-0 rounded-4 shadow-sm bg-body-tertiary">
 
                                     <div class="card-body">
 
                                         <h6 class="fw-bold d-flex align-items-center gap-2 mb-3">
-                                            <i class="fa-solid fa-briefcase text-success"></i>
+                                            <i class="fa-solid fa-file-signature text-success"></i>
                                             Hợp đồng lao động
                                         </h6>
 
-                                        <!-- Email -->
-                                        <div class="mb-3">
+                                        <div class="row g-3">
 
-                                            <label class="form-label fw-semibold">
-                                                Lương cơ bản
-                                            </label>
+                                            <!-- Lương cơ bản -->
+                                            <div class="col-md-6">
 
-                                            <input type="number" class="form-control rounded-4"
-                                                v-model="formData.luongCoBan"
-                                                :class="{ 'is-invalid': errors.luongCoBan }">
+                                                <label class="form-label fw-semibold">
+                                                    Lương cơ bản
+                                                </label>
 
-                                            <div class="invalid-feedback" v-if="errors.luongCoBan">
-                                                {{ errors.luongCoBan[0] }}
+                                                <input type="number" class="form-control rounded-4"
+                                                    v-model="formData.luongCoBan"
+                                                    :class="{ 'is-invalid': errors.luongCoBan }">
+
+                                                <div class="invalid-feedback" v-if="errors.luongCoBan">
+                                                    {{ errors.luongCoBan[0] }}
+                                                </div>
+
                                             </div>
 
-                                        </div>
+                                            <!-- Lương đóng bảo hiểm -->
+                                            <div class="col-md-6">
 
-                                        <!-- Password -->
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Lương đóng bảo hiểm
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Phụ cấp chức vụ
-                                            </label>
+                                                <input type="number" class="form-control rounded-4"
+                                                    v-model="formData.insurance_salary"
+                                                    :class="{ 'is-invalid': errors.insurance_salary }">
 
-                                            <input type="number" class="form-control rounded-4"
-                                                v-model="formData.phuCapChucVu" :class="{ 'is-invalid': errors.phuCapChucVu }">
+                                                <div class="invalid-feedback" v-if="errors.insurance_salary">
+                                                    {{ errors.insurance_salary[0] }}
+                                                </div>
 
-                                            <div class="invalid-feedback" v-if="errors.phuCapChucVu">
-                                                {{ errors.phuCapChucVu[0] }}
                                             </div>
 
-                                        </div>
-                                        <div class="mb-3">
+                                            <!-- Phụ cấp chức vụ -->
+                                            <div class="col-md-6">
 
-                                            <label class="form-label fw-semibold">
-                                                Phụ cấp sinh hoạt
-                                            </label>
+                                                <label class="form-label fw-semibold">
+                                                    Phụ cấp chức vụ
+                                                </label>
 
-                                            <input type="number" class="form-control rounded-4"
-                                                v-model="formData.phuCapSinhHoat" :class="{ 'is-invalid': errors.phuCapSinhHoat }">
+                                                <input type="number" class="form-control rounded-4"
+                                                    v-model="formData.phuCapChucVu"
+                                                    :class="{ 'is-invalid': errors.phuCapChucVu }">
 
-                                            <div class="invalid-feedback" v-if="errors.phuCapSinhHoat">
-                                                {{ errors.phuCapSinhHoat[0] }}
+                                                <div class="invalid-feedback" v-if="errors.phuCapChucVu">
+                                                    {{ errors.phuCapChucVu[0] }}
+                                                </div>
+
                                             </div>
 
-                                        </div>
-                                        <div class="mb-3">
+                                            <!-- Phụ cấp sinh hoạt -->
+                                            <div class="col-md-6">
 
-                                            <label class="form-label fw-semibold">
-                                                Ngày hợp đồng
-                                            </label>
+                                                <label class="form-label fw-semibold">
+                                                    Phụ cấp sinh hoạt
+                                                </label>
 
-                                            <input type="date" class="form-control rounded-4"
-                                                v-model="formData.start_date">
-                                            <div class="invalid-feedback" v-if="errors.start_date">{{
-                                                errors.start_date[0] }}
+                                                <input type="number" class="form-control rounded-4"
+                                                    v-model="formData.phuCapSinhHoat"
+                                                    :class="{ 'is-invalid': errors.phuCapSinhHoat }">
+
+                                                <div class="invalid-feedback" v-if="errors.phuCapSinhHoat">
+                                                    {{ errors.phuCapSinhHoat[0] }}
+                                                </div>
+
                                             </div>
 
-                                        </div>
+                                            <!-- Ngày bắt đầu hợp đồng -->
+                                            <div class="col-md-6">
 
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Ngày bắt đầu hợp đồng
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Hạn hợp đồng
-                                            </label>
+                                                <input type="date" class="form-control rounded-4"
+                                                    v-model="formData.start_date"
+                                                    :class="{ 'is-invalid': errors.start_date }">
+                                                <div class="invalid-feedback" v-if="errors.start_date">
+                                                    {{ errors.start_date[0] }}
+                                                </div>
 
-                                            <input type="date" class="form-control rounded-4"
-                                                v-model="formData.end_date">
-                                            <div class="invalid-feedback" v-if="errors.end_date">{{ errors.end_date[0]
-                                                }}
                                             </div>
 
-                                        </div>
+                                            <!-- Ngày hết hạn hợp đồng -->
+                                            <div class="col-md-6">
 
-                                        <div class="mb-3">
+                                                <label class="form-label fw-semibold">
+                                                    Ngày hết hạn hợp đồng
+                                                </label>
 
-                                            <label class="form-label fw-semibold">
-                                                Ngày ký hợp đồng
-                                            </label>
+                                                <input type="date" class="form-control rounded-4"
+                                                    v-model="formData.end_date"
+                                                    :class="{ 'is-invalid': errors.end_date }">
+                                                <div class="invalid-feedback" v-if="errors.end_date">
+                                                    {{ errors.end_date[0] }}
+                                                </div>
 
-                                            <input type="date" class="form-control rounded-4"
-                                                v-model="formData.sign_date">
-                                            <div class="invalid-feedback" v-if="errors.sign_date">{{ errors.sign_date[0]
-                                                }}
                                             </div>
 
                                         </div>
@@ -366,19 +434,33 @@
                                 </div>
 
                             </div>
-                        </div>
+
+                        </transition>
 
                         <!-- Footer -->
                         <div class="d-flex justify-content-end gap-3 mt-3 pt-3 border-top">
 
                             <button type="button" class="btn btn-light border rounded-pill px-4 fw-semibold"
-                                @click="emit('close')">
+                                @click="emit('close')" v-if="currentStep === 1">
                                 Cancel
                             </button>
 
-                            <button type="submit" class="btn btn-success rounded-pill px-4 fw-semibold shadow-sm">
+                            <button type="button" class="btn btn-light border rounded-pill px-4 fw-semibold"
+                                @click="prevStep" v-if="currentStep > 1">
+                                <i class="fa-solid fa-arrow-left me-2"></i>
+                                Quay lại
+                            </button>
+
+                            <button type="button" class="btn btn-success rounded-pill px-4 fw-semibold shadow-sm"
+                                @click="nextStep" v-if="currentStep < 3">
+                                Tiếp
+                                <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-success rounded-pill px-4 fw-semibold shadow-sm"
+                                @click="saveEmployee" v-if="currentStep === 3">
                                 <i class="fa-solid fa-check me-2"></i>
-                                Save
+                                Lưu nhân viên
                             </button>
 
                         </div>
@@ -401,6 +483,9 @@ const emit = defineEmits([
     'close',
     'update'
 ])
+
+// Wizard control
+const currentStep = ref(1)
 
 // Data select option
 const departments = ref([])
@@ -452,7 +537,76 @@ onMounted(() => {
 }
 )
 
+// ===== Validate theo từng bước (chỉ validate phía client để điều hướng wizard) =====
+const requiredMessage = 'Trường này không được để trống'
+
+const validateStep1 = () => {
+    const stepErrors = {}
+    const fields = ['emp_code', 'fullname', 'birthday', 'sex', 'phone']
+
+    fields.forEach((field) => {
+        if (!formData[field]) {
+            stepErrors[field] = [requiredMessage]
+        }
+    })
+
+    errors.value = stepErrors
+    return Object.keys(stepErrors).length === 0
+}
+
+const validateStep2 = () => {
+    const stepErrors = {}
+    const fields = ['email', 'password', 'hire_date', 'depart_id', 'pos_id', 'role_id']
+
+    fields.forEach((field) => {
+        if (!formData[field]) {
+            stepErrors[field] = [requiredMessage]
+        }
+    })
+
+    errors.value = stepErrors
+    return Object.keys(stepErrors).length === 0
+}
+
+const validateStep3 = () => {
+    const stepErrors = {}
+    const fields = ['luongCoBan', 'insurance_salary', 'phuCapChucVu', 'phuCapSinhHoat', 'start_date', 'end_date']
+
+    fields.forEach((field) => {
+        if (formData[field] === '' || formData[field] === null || formData[field] === undefined) {
+            stepErrors[field] = [requiredMessage]
+        }
+    })
+
+    errors.value = stepErrors
+    return Object.keys(stepErrors).length === 0
+}
+
+const nextStep = () => {
+    let isValid = false
+
+    if (currentStep.value === 1) {
+        isValid = validateStep1()
+    } else if (currentStep.value === 2) {
+        isValid = validateStep2()
+    }
+
+    if (isValid) {
+        errors.value = {}
+        currentStep.value++
+    }
+}
+
+const prevStep = () => {
+    errors.value = {}
+    currentStep.value--
+}
+
 const saveEmployee = async () => {
+    if (!validateStep3()) {
+        return
+    }
+
     try {
         await api.post(`employee/create-employee`, formData)
         emit('close')
@@ -541,5 +695,99 @@ h6 {
 .btn-success:hover {
     background: rgb(13, 148, 136);
     transform: translateY(-1px);
+}
+
+/* ===================== WIZARD STEPPER ===================== */
+.wizard-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 8px 16px 0;
+}
+
+.wizard-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    width: 160px;
+    text-align: center;
+}
+
+.wizard-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    transition: all .25s ease;
+}
+
+.wizard-title {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    transition: color .25s ease;
+}
+
+.wizard-step.active .wizard-circle {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+    box-shadow: 0 0 0 4px rgba(25, 135, 84, .15);
+}
+
+.wizard-step.active .wizard-title {
+    color: #198754;
+    font-weight: 700;
+}
+
+.wizard-step.done .wizard-circle {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+
+.wizard-step.done .wizard-title {
+    color: #198754;
+}
+
+.wizard-line {
+    flex: 1 1 auto;
+    height: 2px;
+    background: #e9ecef;
+    margin-top: 18px;
+    max-width: 120px;
+    transition: background .3s ease;
+}
+
+.wizard-line.filled {
+    background: #198754;
+}
+
+/* ===================== STEP TRANSITION ===================== */
+.step-fade-enter-active,
+.step-fade-leave-active {
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.step-fade-enter-from {
+    opacity: 0;
+    transform: translateX(16px);
+}
+
+.step-fade-leave-to {
+    opacity: 0;
+    transform: translateX(-16px);
 }
 </style>
